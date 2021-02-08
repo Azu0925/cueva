@@ -1,11 +1,12 @@
 {
     "autoload": {
-        "psr-4": {
-            "MyApp\\": "src"
+        "psr-0": {
+            "Cueva": "src"
         }
     },
     "require": {
         "cboden/ratchet": "^0.4.3",
-        "react/zmq": "0.2.*|0.3.*"
+        "vlucas/valitron": "^1.4",
+        "vlucas/phpdotenv": "^5.3"
     }
 }
