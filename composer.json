@@ -1,7 +1,7 @@
 {
     "autoload": {
-        "psr-0": {
-            "Cueva": "src"
+        "psr-4": {
+            "Cueva\\": "src"
         }
     },
     "require": {
