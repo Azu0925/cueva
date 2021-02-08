@@ -2,10 +2,10 @@
     namespace Cueva\Classes;
     
     class DataBase {
-        const HOST = 'localhost';
-        const USER_ID = 'root';
+        const HOST = '';
+        const USER_ID = '';
         const PASSWORD = '';
-        const DB_NAME = 'retas';
+        const DB_NAME = '';
 
         public function __construct(){
             $this->link = @mysqli_connect(self::HOST, self::USER_ID, self::PASSWORD, self::DB_NAME);
@@ -26,19 +26,27 @@
                 $i ++;
                 if(count($insert_list) === $i){
                     $insert_query_columns .= $column;
-                    $insert_query_values .= "'".$value."'";
+                    $insert_query_values .= "'".mysqli_real_escape_string($this->link, $value)."'";
                 }else{
                     $insert_query_columns .= $column.", ";
-                    $insert_query_values .= "'".$value."', ";
+                    $insert_query_values .= "'".mysqli_real_escape_string($this->link, $value)."', ";
                 }
             }
-
             $insert_query = "INSERT INTO ".$table."(".$insert_query_columns.") VALUES (".$insert_query_values.")";
-
             return mysqli_query($link, $insert_query);
         }
 
-        public function setSelect($link, $select_list, $table_name, $join = null, $where = null, $order = null){
+        public function select($link, $select_query){
+            $table = [];
+            $row = [];
+            $query = mysqli_query($link, $select_query);
+            while($row = mysqli_fetch_assoc($query)){
+                $table[] = $row;
+            }
+            return $table;
+        }
+
+        public function setSelect($select_list){
             $sql = "SELECT ";
             $i = 0;
 
@@ -61,7 +69,11 @@
 
         }
 
-        public function setorder(){
+        public function setOrder(){
 
+        }
+
+        public function groupBy(){
+            
         }
     }
