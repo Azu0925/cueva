@@ -1,0 +1,12 @@
+{
+    "autoload": {
+        "psr-0": {
+            "Cueva": "src"
+        }
+    },
+    "require": {
+        "cboden/ratchet": "^0.4.3",
+        "vlucas/valitron": "^1.4",
+        "vlucas/phpdotenv": "^5.3"
+    }
+}
