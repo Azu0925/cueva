@@ -26,6 +26,10 @@ composer dump-autoload
 
 ```
 
+.env.sampleファイルをコピーする。※必ずコピーする。直接編集しない。  
+ファイル名を.envに変更する。  
+中の設定はサンプルなのでdb名等はローカルのDBに合わせて変更してください。
+
 ### websocketサーバーの実行
 
 websocketサーバー未実装
