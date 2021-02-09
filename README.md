@@ -20,9 +20,9 @@ git clone https://github.com/Azu0925/cueva.git
 
 cd cueva
 
-git composer install
+composer install
 
-composer dump-autoload # ←もしかしたらいらんかもｗ
+composer dump-autoload
 
 ```
 
