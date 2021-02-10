@@ -1,5 +1,5 @@
 <?php
-    use Cueva\Classes\ {DataBase, Env};
+    use Cueva\Classes\ {DataBase, Env, Func};
 
     require '../vendor/autoload.php';
 
@@ -7,3 +7,5 @@
     if(isset($db->err_msg)){
         echo $db->err_msg;
     }
+
+    echo Func::is_value('');
