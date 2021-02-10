@@ -11,6 +11,10 @@ class DataBase {
         mysqli_set_charset($this->link, 'utf8');
     }
 
+    public function __destruct(){
+        mysqli_close($this->link);
+    }
+
     public function insert($link, $insert_list, $table){
         $i = 0;
         $insert_query_columns = '';
@@ -19,14 +23,14 @@ class DataBase {
             $i ++;
             if(count($insert_list) === $i){
                 $insert_query_columns .= $column;
-                $insert_query_values .= "'".mysqli_real_escape_string($this->link, $value)."'";
+                $insert_query_values .= "? ";
             }else{
                 $insert_query_columns .= $column.", ";
-                $insert_query_values .= "'".mysqli_real_escape_string($this->link, $value)."', ";
+                $insert_query_values .= "?, ";
             }
         }
         $insert_query = "INSERT INTO ".$table."(".$insert_query_columns.") VALUES (".$insert_query_values.")";
-        return mysqli_query($link, $insert_query);
+        return $insert_query;
     }
 
     public function select($link, $select_query){
@@ -46,12 +50,15 @@ class DataBase {
     public function setSelect($select_list, $table){
         $sql = "SELECT ";
         $i = 0;
+        if($select_list === '*'){
+            return $sql.mysqli_real_escape_string($this->link, $select_list)." FROM ".$table;
+        }
         foreach($select_list as $value){
             $i ++;
             if(count($select_list) === $i){
-                $sql .= $value.' ';
+                $sql .= mysqli_real_escape_string($this->link, $value).' ';
             }else{
-                $sql .= $value.', ';
+                $sql .= mysqli_real_escape_string($this->link, $value).', ';
             }
         }
         return $sql." FROM ".$table;
@@ -63,15 +70,16 @@ class DataBase {
         foreach($update_list as $column => $value){
             $i ++;
             if(count($update_list) === $i){
-                $update_set_list .= $column."='".$value."'";
+                $update_set_list .= mysqli_real_escape_string($this->link, $column)."='".mysqli_real_escape_string($this->link, $value)."'";
             }else{
-                $update_set_list .= $column."='".$value."', ";
+                $update_set_list .= mysqli_real_escape_string($this->link, $column)."='".mysqli_real_escape_string($this->link, $value)."', ";
             }
         }
         return "UPDATE ".$table." SET ".$update_set_list." ";
     }
 
-    public function setWhere(){
+    public function setWhere($column, $value){
+        return " WHERE ".mysqli_real_escape_string($this->link, $column)."=".mysqli_real_escape_string($this->link, $value);
     }
 
     public function setJoin(){
