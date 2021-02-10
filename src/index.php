@@ -1,7 +1,9 @@
 <?php
-    use Cueva\Classes\ {DataBase};
+    use Cueva\Classes\ {DataBase, Env};
 
-    require dirname(__DIR__).'/vendor/autoload.php';
-    require_once './Classes/DataBase.php';
-    $db = new DataBase;
-    print($db->link);
+    require '../vendor/autoload.php';
+
+    $db = new DataBase(Env::get("HOST"), Env::get("USER_ID"), Env::get("PASSWORD"), Env::get("DB_NAME"));
+    if(isset($db->err_msg)){
+        echo $db->err_msg;
+    }
