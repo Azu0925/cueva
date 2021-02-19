@@ -3,8 +3,8 @@
 
         use Cueva\Classes\ {Env, Func};
 
-        require_once '../vendor/j4mie/idiorm/idiorm.php';
-        require '../vendor/autoload.php';
+        require_once '../../vendor/j4mie/idiorm/idiorm.php';
+        require '../../vendor/autoload.php';
 
         
         ORM::configure('mysql:host='.Env::get("HOST").';port='.Env::get("PORT").';dbname='.Env::get("DB_NAME"));
@@ -12,29 +12,32 @@
         ORM::configure('password', Env::get("PASSWORD"));
 
         $table = 'user'; //テーブルの名前
-        $query = ORM::for_table($table)->find_one();
-        var_dump($query->as_array());
+        // $query = ORM::for_table($table)->find_one();
+        // var_dump($query->as_array());
         
 
-        $token = $_POST['token']//tokenを取得し変数へ格納
-        $person = ORM::for_table($table)->where('token', $token)->find_one();
-        $person->token = null;
-        $person->save()
+        $token = NULL;//$_POST['token'];//tokenを取得し変数へ格納
+        var_dump($token);
+        $update = ORM::for_table($table)->where('token', $token) ->find_one();
+        $update->token = "ウンチ";
+                $update->save();
+                var_dump($update);
 
-        {
-            "result": true
-        }
-        {
-            "error": [
-            {
-                "code": エラーコード(int),
-                "message": エラーメッセージ(string)
-            },
-            {
-                "code": 同上,
-                "message": 同上
-            }
-            ]
-        }
+        // {
+        //     "result": true
+            
+        // }
+        // {
+        //     "error": [
+        //     {
+        //         "code": エラーコード(int),
+        //         "message": エラーメッセージ(string)
+        //     },
+        //     {
+        //         "code": 同上,
+        //         "message": 同上
+        //     }
+        //     ]
+        // }
         
 
