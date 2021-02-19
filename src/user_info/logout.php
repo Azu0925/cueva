@@ -20,7 +20,7 @@
         var_dump($token);
         $update = ORM::for_table($table)->where('token', $token) ->find_one();
         $update->token = "ウンチ";
-                $update->save();
+                $update->save('token', $token);
                 var_dump($update);
 
         // {
