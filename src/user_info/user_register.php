@@ -5,17 +5,28 @@ use Cueva\Classes\ {Env, Func};
     require_once '../../vendor/j4mie/idiorm/idiorm.php';
     require '../../vendor/autoload.php';
 
-    
     ORM::configure('mysql:host='.Env::get("HOST").';port='.Env::get("PORT").';dbname='.Env::get("DB_NAME"));
     ORM::configure('username', Env::get('USER_ID'));
     ORM::configure('password', Env::get("PASSWORD"));
-
+    ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 //入力値の受け取り
-$name = $_POST['name'];
+$name = $_POST['user_name'];
 $address = $_POST['user_address'];
 $password = $_POST['user_password'];
 //テーブルの名前
 $table = 'user';
+//バリデーションチェック
+if((empty($_POST['user_name']))){
+    $err_name = "Validation error for 'name'";
+    
+    if((empty($_POST['user_address']))){
+        $err_address = "Validation error for 'address'";
+    }
+        if((empty($_POST['usser_password']))){
+            $err_pass = "Validation error for 'password'";
+        }
+exit;
+}
 //パスワードのハッシュ化
 $hash = password_hash($password, PASSWORD_DEFAULT);
 //ユーザー情報の登録
@@ -35,6 +46,7 @@ foreach ($people as $person) {
 //jsonの返却
 $response = array(
     'user' => $porson,
+    'err' => $err_name,$err_address,$err_pass,
 );
 echo json_encode($response);
 ?>
