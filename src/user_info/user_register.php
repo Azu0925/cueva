@@ -35,6 +35,11 @@ $person->user_name = $name;
 $person->user_address = $address;
 $person->user_password = $hash;
 $person->save();
+//insert失敗の処理     
+    if((empty($porson->user_address))){
+        $err = "Insert error for database 452";
+        exit;    
+    }
 //tokenの生成
 $token = uniqid(dechex(random_int(0, 255)));
 $person = ORM::for_table('user')->where('use_address', $_POST['user_address'])->find_one();
