@@ -51,7 +51,7 @@ foreach ($people as $person) {
 //jsonの返却
 $response = array(
     'user' => $porson,
-    'err' => $err_name,$err_address,$err_pass,
+    'err' => $err_name,$err_address,$err_pass,$err,
 );
 echo json_encode($response);
 ?>
