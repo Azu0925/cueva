@@ -26,6 +26,7 @@ else{
     $delete_comp = "delete complete";
     // require_once './';
 }
+
 //jsonの返却
 $response = array(
     'delete' => $team,$member,$delete_comp,
