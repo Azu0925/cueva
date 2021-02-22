@@ -16,16 +16,44 @@ $password = $_POST['user_password'];
 //テーブルの名前
 $table = 'user';
 //バリデーションチェック
-if((empty($_POST['user_name']))){
+if ((empty($_POST['user_name']))) {
     $err_name = "Validation error for 'name'";
-    
-    if((empty($_POST['user_address']))){
-        $err_address = "Validation error for 'address'";
-    }
-        if((empty($_POST['usser_password']))){
-            $err_pass = "Validation error for 'password'";
-        }
-exit;
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "451",
+                "message" => $error_name
+            )
+        )
+    );
+    echo json_encode($eror);
+    exit;
+}
+if((empty($_POST['user_address']))){
+    $err_address = "Validation error for 'address'";
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "451",
+                "message" => $error_name
+            )
+        )
+    );
+    echo json_encode($eror);
+    exit;
+}
+if((empty($_POST['usser_password']))){
+    $err_pass = "Validation error for 'password'";
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "451",
+                "message" => $error_name
+            )
+        )
+    );
+    echo json_encode($eror);
+    exit;
 }
 //パスワードのハッシュ化
 $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -35,11 +63,18 @@ $person->user_name = $name;
 $person->user_address = $address;
 $person->user_password = $hash;
 $person->save();
-//insert失敗の処理     
-    if((empty($porson->user_address))){
-        $err = "Insert error for database 452";
-        exit;    
-    }
+//insert失敗の処理   
+if((empty($person->save()))){
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "452",
+                "message" => "Insert error for database 452"
+            )
+        )
+    );
+}
+echo json_encode($error);
 //tokenの生成
 $token = uniqid(dechex(random_int(0, 255)));
 $person = ORM::for_table('user')->where('use_address', $_POST['user_address'])->find_one();
@@ -50,8 +85,7 @@ foreach ($people as $person) {
 }
 //jsonの返却
 $response = array(
-    'user' => $porson,
-    'err' => $err_name,$err_address,$err_pass,$err,
+    'user' => $person,
 );
 echo json_encode($response);
 ?>
