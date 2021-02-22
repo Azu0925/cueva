@@ -1,8 +1,9 @@
 <?php
-    namespace Cueva\Map;
+    namespace Cueva\Classes;
     use Cueva\Classes\ {Env, Func};
     use Ratchet\MessageComponentInterface;
     use Ratchet\ConnectionInterface;
+    
     class Map implements MessageComponentInterface {
         protected $clients;
         private $subscriptions;
@@ -42,6 +43,7 @@
                                 ORM::configure('mysql:host='.Env::get("HOST").';port='.Env::get("PORT").';dbname='.Env::get("DB_NAME"));
                                 ORM::configure('username', Env::get('USER_ID'));
                                 ORM::configure('password', Env::get("PASSWORD"));
+                                ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 
                                 $table = 'map'; //テーブルの名前
                                 $query = ORM::for_table($table)->where(array('team_id' => $data->message))->find_many(); // 該当データの取り出し
@@ -71,6 +73,7 @@
                                 ORM::configure('mysql:host='.Env::get("HOST").';port='.Env::get("PORT").';dbname='.Env::get("DB_NAME"));
                                 ORM::configure('username', Env::get('USER_ID'));
                                 ORM::configure('password', Env::get("PASSWORD"));
+                                ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 
                                 $table = 'card'; //テーブルの名前
                                 $query = ORM::for_table($table)->where(array('map_id' => $data->message))->find_many(); // 該当データの取り出し
