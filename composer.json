@@ -8,6 +8,8 @@
         "cboden/ratchet": "^0.4.3",
         "vlucas/valitron": "^1.4",
         "vlucas/phpdotenv": "^5.3",
-        "j4mie/idiorm": "^1.5"
+        "j4mie/idiorm": "^1.5",
+        "digitalnature/php-ref": "dev-master",
+        "monolog/monolog": "^2.2"
     }
 }

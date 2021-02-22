@@ -41,8 +41,10 @@ google共有ドライブの [hew_チーム２\documents\システム設計](http
 - [クラス設計](https://docs.google.com/spreadsheets/d/1DSekoGfacdyXfhJCMJ6LPnOv8QyaFyjz09yHzwA6Edw/edit#gid=0)　※まだ全部書いてない。てゆうか多分使わない
 - [URI設計](https://docs.google.com/spreadsheets/d/1ntQswypzLi_ubRAX6D7sdibndYA8jIGEHbl8psTHTBg/edit#gid=0) ※まだ書いてない
 
-## 仕様ライブラリ
-- [Dotenv](https://github.com/vlucas/phpdotenv)
-- [idiorm](https://idiorm.readthedocs.io/en/latest/index.html)
-- [ratchat](http://socketo.me/)
-- [Valitron](https://github.com/vlucas/valitron)
+## 使用ライブラリ
+- [Dotenv](https://github.com/vlucas/phpdotenv) envファイル読み込みライブラリ
+- [idiorm](https://idiorm.readthedocs.io/en/latest/index.html) DBライブラリ
+- [ratchat](http://socketo.me/) websocketライブラリ
+- [Valitron](https://github.com/vlucas/valitron) バリテーションチェックライブラリ
+- [php-ref](https://github.com/digitalnature/php-ref) デバッグライブラリ
+- [monolog](https://github.com/Seldaek/monolog) デバッグログライブラリ
