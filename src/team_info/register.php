@@ -23,8 +23,7 @@
     $team_table = 'team';
 
     //tokenの取得
-    //
-    $token = [''];
+    $token = $_COOKIE['token'];
 
     //登録されているユーザー情報取得
     $user_list = ORM::for_table($user_table)->where('token', $token)->find_one();
