@@ -23,7 +23,7 @@
 
     $user_list = [];
     foreach(ORM::for_table($table)->find_result_set() as $list) {
-        $user_list[] = ($list->as_array('user_id' , 'user_name' , 'user_address' , 'user_password' ,'token'));
+        $user_list[] = ($list->as_array('id' , 'user_name' , 'user_address' , 'user_password' ,'token'));
     }
     // var_dump($user_list);
 
@@ -55,14 +55,14 @@
 }
 
     //user_idの取得
-    $id = $user_list['user_id'];
+    $id = $user_list['id'];
     
     //token生成
     $generate_token = uniqid(dechex(random_int(0, 255)));
     // var_dump($token);
 
     //token上書き
-    ORM::for_table($table)->where('user_id',$id)->find_result_set()
+    ORM::for_table($table)->where('id',$id)->find_result_set()
         ->set('token', $generate_token)
         ->save();
 
