@@ -17,22 +17,39 @@ $team = ORM::for_table('member')->where('user_id', $_POST['user_id'])->find_mamy
 //エラー処理
     //認証失敗
     if((empty($_POST['token']))){
-        $err = "Unauthorized 401";
-        exit;    
+        $error = array(
+            "error" => array(
+                array(
+                    "code" => "401",
+                    "message" => "Unauthorized"
+                )
+            )
+        );
     }
     //リソースが見つからなかった時
-    if((empty($porson))){
-        $err = "Not Found 404";
-        exit;    
+    if((empty($person))){
+        $error = array(
+            "error" => array(
+                array(
+                    "code" => "404",
+                    "message" => "Not Found"
+                )
+            )
+        );
     }
     if((empty($team))){
-        $err = "Not Found 404";
-        exit;    
+        $error = array(
+            "error" => array(
+                array(
+                    "code" => "404",
+                    "message" => "Not Found"
+                )
+            )
+        );
     }
-
 //jsonの返却
 $response = array(
-    'user' => $porson,
+    'user' => $person,
     'team' => $team,
     'err' => $err,
 );
