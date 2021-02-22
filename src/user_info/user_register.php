@@ -9,6 +9,7 @@ use Cueva\Classes\ {Env, Func};
     ORM::configure('username', Env::get('USER_ID'));
     ORM::configure('password', Env::get("PASSWORD"));
     ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+
 //入力値の受け取り
 $name = $_POST['user_name'];
 $address = $_POST['user_address'];
@@ -55,7 +56,53 @@ if((empty($_POST['usser_password']))){
     echo json_encode($error);
     exit;
 }
-// 文字列が含まれるかどうかチェック
+//正規表現
+//メールアドレス
+const MAIL = "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/";
+//ログインID
+const PASS = "/^[a-zA-Z0-9]{8,30}+$/";
+//名前
+const NAME = "/{1,30}+$/";
+//パスワードの文字数制限
+if(!preg_match(PASS,$_POST['user_password'])){
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "451",
+                "message" => $error_pass
+            )
+        )
+    );
+    echo json_encode($error);
+    exit;
+}
+//アドレスの文字制限
+if(!preg_match(MAIL,$address)){
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "451",
+                "message" => $error_address
+            )
+        )
+    );
+    echo json_encode($error);
+    exit;
+}
+//名前の文字制限
+if(!preg_match(NAME,$name)){
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "451",
+                "message" => $error_name
+            )
+        )
+    );
+    echo json_encode($error);
+    exit;
+}
+//アドレスに＠が含まれるかどうかチェック
 $heystack = $address; // 捜査対象となる文字列
 $needle   = '@'; // 見つけたい文字列
 if ( strpos( $heystack, $needle ) === false ) {
@@ -84,7 +131,7 @@ if(($person->save())){
         "error" => array(
             array(
                 "code" => "452",
-                "message" => "Insert error for database 452"
+                "message" => "Insert error for database"
             )
         )
     );
@@ -92,7 +139,7 @@ if(($person->save())){
 echo json_encode($error);
 //tokenの生成
 $token = uniqid(dechex(random_int(0, 255)));
-$person = ORM::for_table('user')->where('use_address', $_POST['user_address'])->find_one();
+$person = ORM::for_table('user')->where('user_address', $user_address)->find_one();
 $people = ORM::for_table('user')->find_many();
 foreach ($people as $person) {
     $person->token = $token;
