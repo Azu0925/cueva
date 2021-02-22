@@ -26,7 +26,7 @@ if ((empty($_POST['user_name']))) {
             )
         )
     );
-    echo json_encode($eror);
+    echo json_encode($error);
     exit;
 }
 if((empty($_POST['user_address']))){
@@ -35,24 +35,24 @@ if((empty($_POST['user_address']))){
         "error" => array(
             array(
                 "code" => "451",
-                "message" => $error_name
+                "message" => $error_address
             )
         )
     );
-    echo json_encode($eror);
+    echo json_encode($error);
     exit;
 }
-if((empty($_POST['usser_password']))){
+if((empty($_POST['user_password']))){
     $err_pass = "Validation error for 'password'";
     $error = array(
         "error" => array(
             array(
                 "code" => "451",
-                "message" => $error_name
+                "message" => $error_pass
             )
         )
     );
-    echo json_encode($eror);
+    echo json_encode($error);
     exit;
 }
 //パスワードのハッシュ化
@@ -64,7 +64,7 @@ $person->user_address = $address;
 $person->user_password = $hash;
 $person->save();
 //insert失敗の処理   
-if((empty($person->save()))){
+if(!$person->save()){
     $error = array(
         "error" => array(
             array(
