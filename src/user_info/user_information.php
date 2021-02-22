@@ -25,6 +25,8 @@ $team = ORM::for_table('member')->where('user_id', $_POST['user_id'])->find_mamy
                 )
             )
         );
+        echo json_encode($error);
+        exit;
     }
     //リソースが見つからなかった時
     if((empty($person))){
@@ -36,6 +38,8 @@ $team = ORM::for_table('member')->where('user_id', $_POST['user_id'])->find_mamy
                 )
             )
         );
+        echo json_encode($error);
+        exit;
     }
     if((empty($team))){
         $error = array(
@@ -46,12 +50,13 @@ $team = ORM::for_table('member')->where('user_id', $_POST['user_id'])->find_mamy
                 )
             )
         );
+        echo json_encode($error);
+        exit;
     }
 //jsonの返却
 $response = array(
     'user' => $person,
     'team' => $team,
-    'err' => $err,
 );
 echo json_encode($response);
 ?>
