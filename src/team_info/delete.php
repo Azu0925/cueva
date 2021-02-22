@@ -17,7 +17,15 @@ $member = ORM::for_table('member')->where_like('user_id',$user['user_id'])->find
 $team = ORM::for_table('team')->where_like('team_id',$member['team_id'])->find_many();
 //チーム情報が見つからなかった時のエラー　見つかったらレコードの削除
 if((empty($team))){
-    $err = "Not Found 404";
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "404",
+                "message" => "Not Found"
+            )
+        )
+    );
+    echo json_encode($eror);
     exit;
 }
 else{
