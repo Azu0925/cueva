@@ -12,64 +12,58 @@
 
 
     //入力値の受け取り
+    $user_id = $_POST['user_id'];
+    $user_name = $_POST['user_name'];
     $user_address = $_POST['user_address'];
-    $user_password = $_POST['user_password'];
     
     //table指定
     $table = 'user';
 
-    //登録されているユーザー情報の全件取得
-    $list = ORM::for_table($table)->where('user_address', $user_address)->find_many();
+    //tokenの取得
+    //
+    $token = [''];
 
+    //登録されているtokenの全件取得
+    $list = ORM::for_table($table)->where('token', $token)->find_one();
+    
     $user_list = [];
     foreach(ORM::for_table($table)->find_result_set() as $list) {
-        $user_list[] = ($list->as_array('user_id' , 'user_name' , 'user_address' , 'user_password' ,'token'));
+        $user_list[] = ($list->as_array('token'));
     }
     // var_dump($user_list);
 
-    //メールアドレスの照合
-    if($user_address !== $list['user_address']){
+    //tokenの照合
+    if($token !== $list['token']){
         //エラー内容
         //jsonでエラーメッセージの返却
-        $err = array(
-            'error' =>
-        array( 
-        array('code' => '401','message' => 'Unauthorized')),
-    );
-        echo json_encode($err);
-}
-    
-    //パスワードの取得
-    $hash = $user_list['user_password'];
-
-    //パスワードの照合
-    if(password_verify($user_password, $hash) !== $user_list['user_password']){
-        //エラー内容
-        //jsonでエラーメッセージの返却
-        $err = array(
-            'error' =>
+        $err = array('error' =>
         array( 
         array('code' => '401','message' => 'Unauthorized')),
     );
         echo json_encode($err);
 }
 
-    //user_idの取得
-    $id = $user_list['user_id'];
-    
-    //token生成
-    $generate_token = uniqid(dechex(random_int(0, 255)));
-    // var_dump($token);
-
-    //token上書き
-    ORM::for_table($table)->where('user_id',$id)->find_result_set()
-        ->set('token', $generate_token)
+    //アカウント内容の変更
+    $user_table = ORM::for_table($table)->where('token',$token)->find_result_set()
+        ->set('user_id',$user_id ,'user_name',$user_name ,'user_address',$user_address)
         ->save();
-
-    //jsonでtokenの返却
+    
+    //アカウント内容変更時エラーメッセージ
+    if(!$user_table){
+        //エラー内容
+        //jsonでエラーメッセージの返却
+        $err = array(
+            'error' =>
+        array( 
+        array('code' => '452','message' => 'Insert error for database')),
+    );
+        echo json_encode($err);
+    }
+    
+    //jsonで返却
     $response = array(
-        'token' => $generate_token,
+        'result' => true,
     );
     echo json_encode($response);
-
+    
 ?>
