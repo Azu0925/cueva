@@ -13,10 +13,12 @@
     ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
     $table = 'user'; //テーブルの名前
 
+    //$testToken = 'test';
+
     //tokenカラムをNULLにアップデート
-    if (isset($_POST['token'])) {
+    if (isset($_POST['token']/*$testToken*/)) {
       $token = $_POST['token']; //tokenを取得し変数へ格納
-      $update = ORM::for_table($table)->where('token', $token)->find_one();
+      $update = ORM::for_table($table)->where('token', $token/*$testToken*/)->find_one();
       $update->token = NULL;
       $update->save();
     
