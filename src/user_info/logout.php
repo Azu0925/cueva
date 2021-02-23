@@ -13,20 +13,15 @@
         ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 
         $table = 'user'; //テーブルの名前
-         $query = ORM::for_table($table)->find_one();
-        // var_dump($query->as_array());
+        $token = 'papalaalala';//$_POST['token'];//tokenを取得し変数へ格納
+
+        $update = ORM::for_table('user')->where('token', $token)->find_one();
+        $update->token = NULL;
+        $update->save();
+        
+        var_dump($update);
 
 
-        $record = ORM::for_table('user')->where('token', 'ウンチ')->find_one();
-        echo $record->user_id."\n";
-        echo $record->token."\n";
-        echo $record->user_password."\n";
-
-        $people = ORM::for_table('user')->find_many();
-        foreach ($people as $person) {
-        $person->token = 'panpan';
-         $person->save();
-        }
 /*
         $token = 'ウンチ';//$_POST['token'];//tokenを取得し変数へ格納
         try{
@@ -40,6 +35,8 @@
         echo "エラー発生：".$e->getMessage();
       }
                 var_dump($update);*/
+
+
 
         
 
