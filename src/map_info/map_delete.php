@@ -1,5 +1,5 @@
     <?php
-    //これをsrc直下にコピーしてファイル名の「.sample」部分を削除して動かしてちょ
+
 
     use Cueva\Classes\{Env, Func};
 
