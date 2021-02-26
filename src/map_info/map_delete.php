@@ -1,5 +1,5 @@
     <?php
-
+    //これをsrc直下にコピーしてファイル名の「.sample」部分を削除して動かしてちょ
 
     use Cueva\Classes\{Env, Func};
 
@@ -11,63 +11,66 @@
     ORM::configure('username', Env::get('USER_ID'));
     ORM::configure('password', Env::get("PASSWORD"));
     ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
-    $table = 'user'; //テーブルの名前
+    $table = 'v_map_delete'; //テーブルの名前
 
     //$testToken = 'test';
-/*
-    $delete = ORM::for_table('person')
-            ->where(array(
-                'name' => '山田太郎',
-                'フィールド名' => '値'
-            ))
-            ->delete_many();*/
 
-    //tokenカラムをNULLにアップデート
-    //if (isset($_POST['token']/*$testToken*/)) {
-      $token = "1234";//$_POST['token']; //tokenを取得し変数へ格納
-      $update = ORM::for_table('user')
-      ->join('member', array('user.id', '=', 'member.user_id'))
-      ->join('team', array('member.team_id', '=', 'team.id'))
-      ->where('token', $token/*$testToken*/ AND 'map.id','1')->find_many()
-      ->save();
-
-      var_dump($update);
-      
-
-/*
-      $update->token = NULL;
-      $update->save();
-    
-    if (($update->save())) {
-      $result = array(
-        "result" => array(
-          array(
-            "result" => true
+    //tokenとmap_idの検索
+    if (isset($_POST['token']) && isset($_POST['map_id'])) {
+      $token = $_POST['token'];  //tokenを取得し変数へ格納
+      $map_id = $_POST['map_id']; //map_idを取得し変数へ格納
+      $select = ORM::for_table('v_map_delete')
+        ->where(array(
+          'token' => $token,
+          'm_id' => $map_id
+        ))
+        ->find_many();
+      if ($select != false) { //map削除処理
+        $delete = ORM::for_table("map")->where('id', $map_id)->find_one();
+        if ($delete != false) {
+          $delete->delete();
+          $result = array(
+            "result" => array(
+              array(
+                "result" => true
+              )
+            )
+          );
+          echo json_encode($result);
+          exit;
+        } else { //Dleteエラー処理
+          $error = array(
+            "error" => array(
+              array(
+                "code" => "452",
+                "message" => "Delete error for database"
+              )
+            )
+          );
+          echo json_encode($error);
+          exit;
+        }
+      } else { //tokenとmap_idに関連性がなかった場合(チームメンバー以外の削除リクエスト)
+        $error = array(
+          "error" => array(
+            array(
+              "code" => "400",
+              "message" => "Bad Request"
+            )
           )
-        )
-      );
-      echo json_encode($result);
-      exit;
-    }else{
-      $error = array(
-        "error" => array(
-          array(
-            "code" => "452",
-            "message" => "Update error for database"
-          )
-        )
-      );
-      echo json_encode($error);
-      exit;
+        );
+        echo json_encode($error);
+        exit;
+      }
     }
-  }
-  $error = array(
-    "error" => array(
-      array(
-        "code" => "404",
-        "message" => "Not Found"
+    //tokenとmap_idが取得できなかった場合
+    $error = array(
+      "error" => array(
+        array(
+          "code" => "404",
+          "message" => "Not Found"
+        )
       )
-    )
-  );
-*/
-    //echo json_encode($error);
+    );
+
+    echo json_encode($error);
