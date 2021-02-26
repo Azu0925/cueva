@@ -57,7 +57,7 @@ const MAIL = "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-
 //ログインID
 const PASS = "/^[a-zA-Z0-9]{8,30}+$/";
 //名前
-const NAME = "/^{1,30}+$/";
+const NAME = "/^.{1,30}+$/";
 //入力値の受け取り
 $name = $_POST['user_name'];
 $address = $_POST['user_address'];
