@@ -23,7 +23,7 @@ if ((empty($_POST['user_name']))) {
         "error" => array(
             array(
                 "code" => "451",
-                "message" => $error_name
+                "message" => $err_name
             )
         )
     );
@@ -36,7 +36,7 @@ if((empty($_POST['user_address']))){
         "error" => array(
             array(
                 "code" => "451",
-                "message" => $error_address
+                "message" => $err_address
             )
         )
     );
@@ -49,7 +49,7 @@ if((empty($_POST['usser_password']))){
         "error" => array(
             array(
                 "code" => "451",
-                "message" => $error_pass
+                "message" => $err_pass
             )
         )
     );
@@ -69,7 +69,7 @@ if(!preg_match(PASS,$_POST['user_password'])){
         "error" => array(
             array(
                 "code" => "451",
-                "message" => $error_pass
+                "message" => $err_pass
             )
         )
     );
@@ -82,7 +82,7 @@ if(!preg_match(MAIL,$address)){
         "error" => array(
             array(
                 "code" => "451",
-                "message" => $error_address
+                "message" => $err_address
             )
         )
     );
@@ -95,7 +95,7 @@ if(!preg_match(NAME,$name)){
         "error" => array(
             array(
                 "code" => "451",
-                "message" => $error_name
+                "message" => $err_name
             )
         )
     );
@@ -135,8 +135,10 @@ if(($person->save())){
             )
         )
     );
+    echo json_encode($error);
+    exit;
 }
-echo json_encode($error);
+
 //tokenの生成
 $token = uniqid(dechex(random_int(0, 255)));
 $person = ORM::for_table('user')->where('user_address', $user_address)->find_one();
