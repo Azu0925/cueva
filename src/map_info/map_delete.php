@@ -14,18 +14,27 @@
     $table = 'user'; //テーブルの名前
 
     //$testToken = 'test';
-
+/*
     $delete = ORM::for_table('person')
             ->where(array(
                 'name' => '山田太郎',
                 'フィールド名' => '値'
             ))
-            ->delete_many();
+            ->delete_many();*/
 
     //tokenカラムをNULLにアップデート
-    if (isset($_POST['token']/*$testToken*/)) {
-      $token = $_POST['token']; //tokenを取得し変数へ格納
-      $update = ORM::for_table($table)->where('token', $token/*$testToken*/)->find_one();
+    //if (isset($_POST['token']/*$testToken*/)) {
+      $token = "1234";//$_POST['token']; //tokenを取得し変数へ格納
+      $update = ORM::for_table('user')
+      ->join('member', array('user.id', '=', 'member.user_id'))
+      ->join('team', array('member.team_id', '=', 'team.id'))
+      ->where('token', $token/*$testToken*/ AND 'map.id','1')->find_many()
+      ->save();
+
+      var_dump($update);
+      
+
+/*
       $update->token = NULL;
       $update->save();
     
@@ -60,5 +69,5 @@
       )
     )
   );
-
-    echo json_encode($error);
+*/
+    //echo json_encode($error);
