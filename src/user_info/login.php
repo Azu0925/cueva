@@ -37,6 +37,7 @@
         array('code' => '401','message' => 'Unauthorized')),
     );
         echo json_encode($err);
+        exit;
 }
     
     //パスワードの取得
@@ -52,6 +53,7 @@
         array('code' => '401','message' => 'Unauthorized')),
     );
         echo json_encode($err);
+        exit;
 }
 
     //user_idの取得
