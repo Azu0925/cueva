@@ -12,7 +12,6 @@
 
 
     //入力値の受け取り
-    $user_id = $_POST['user_id'];
     $user_name = $_POST['user_name'];
     $user_address = $_POST['user_address'];
     
@@ -20,7 +19,7 @@
     $table = 'user';
 
     //tokenの取得
-    $token = $_COOKIE['token'];
+    $token = $_POST['token'];
 
     //登録されているtokenの全件取得
     $list = ORM::for_table($table)->where('token', $token)->find_one();
@@ -45,7 +44,7 @@
 
     //アカウント内容の変更
     $user_table = ORM::for_table($table)->where('token',$token)->find_result_set()
-        ->set('user_id',$user_id ,'user_name',$user_name ,'user_address',$user_address)
+        ->set('user_name',$user_name ,'user_address',$user_address)
         ->save();
     
     //アカウント内容変更時エラーメッセージ
