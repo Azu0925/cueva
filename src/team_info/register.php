@@ -12,10 +12,10 @@
 
 
     //入力値の受け取り
-    $team_name = 'あ';
-    $team_description = '1';
-    $team_create = '2';
-    $team_host = '3';
+    $team_name = "kokoko";//$_POST['team_name'];
+    $team_description = "kokoko";//$_POST['team_description'];
+    //$team_create = $_POST['team_create'];
+    $team_host = "kokoko";//$_POST['team_host'];
     
     //table指定
     $user_table = 'user';
@@ -48,7 +48,7 @@
     $new_team = ORM::for_table($team_table)->create();
     $new_team->team_name = $team_name;
     $new_team->team_description = $team_description;
-    $new_team->team_create = $team_create;
+    //$new_team->team_create = $team_create;
     $new_team->team_host = $team_host;
     $new_team->save();
 
