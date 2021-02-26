@@ -21,20 +21,35 @@ if((empty($_POST['user_address']))){
 //送られてきたトークンからユーザー情報を取得
 $person = ORM::for_table('user')->where('token', $_POST['token'])->find_mamy();
 //ユーザー情報が見つからなかった時のエラー　見つかったらレコードの削除
+// if((empty($person['user_id']))){
+//     $err = "Not Found 404";
+//     exit;
+// }
+// else{
+//     $delete = ORM::for_table('user')->where_like('token',$_POST['token'])->find_many();
+//     $delete->delete();
+//     $delete_comp = "delete complete";
+// }
 if((empty($person['user_id']))){
-    $err = "Not Found 404";
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "404",
+                "message" => "Not Found"
+            )
+        )
+    );
+    echo json_encode($error);
     exit;
 }
 else{
-    $delete = ORM::for_table('user')->where_like('token',$_POST['token'])->find_many();
+    $delete = ORM::for_table('user')->where_like('token',$_COOKIE['token'])->find_many();
     $delete->delete();
     $delete_comp = "delete complete";
 }
-
 //jsonの返却
 $response = array(
     'delete' => $delete,$delete_comp,
-    'err' => $err,$err_address,$err_pass,
 );
 echo json_encode($response);
 ?>
