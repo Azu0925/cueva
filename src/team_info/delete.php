@@ -11,7 +11,7 @@ use Cueva\Classes\ {Env, Func};
     ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 
 //送られてきたトークンからチーム情報を取得
-$token = $_POST['token'];
+$token = $_COOKIE['token'];
 $user = ORM::for_table('user')->where_like('token',$token)->find_many();
 $member = ORM::for_table('member')->where_like('user_id',$user['user_id'])->find_many();
 $team = ORM::for_table('team')->where_like('team_id',$member['team_id'])->find_many();
