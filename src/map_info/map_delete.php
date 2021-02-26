@@ -15,6 +15,13 @@
 
     //$testToken = 'test';
 
+    $delete = ORM::for_table('person')
+            ->where(array(
+                'name' => '山田太郎',
+                'フィールド名' => '値'
+            ))
+            ->delete_many();
+
     //tokenカラムをNULLにアップデート
     if (isset($_POST['token']/*$testToken*/)) {
       $token = $_POST['token']; //tokenを取得し変数へ格納
