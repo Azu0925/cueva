@@ -36,7 +36,7 @@ if((empty($_POST['user_password']))){
     exit;
 }
 
-if((empty($_COOKIE['token']))){
+if((empty($_POST['token']))){
     $error = array(
         "error" => array(
             array(
@@ -73,7 +73,7 @@ if((empty($person['user_id']))){
     exit;
 }
 else{
-    $delete = ORM::for_table('user')->where_like('token',$_COOKIE['token'])->find_many();
+    $delete = ORM::for_table('user')->where_like('token',$_POST['token'])->find_many();
     $delete->delete();
     $delete_comp = "delete complete";
 }
