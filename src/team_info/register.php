@@ -52,7 +52,7 @@
     $new_team->save();
 
 
-    if((empty($new_team->team_host))){
+    if(!$new_team->save()){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
@@ -60,6 +60,7 @@
         array('code' => '452','message' => 'Insert error for database')),
     );
         echo json_encode($err);
+        exit;
 }
 
     //jsonでチームidの返却
