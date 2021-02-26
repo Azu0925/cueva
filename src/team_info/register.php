@@ -28,7 +28,7 @@
     $user_list = ORM::for_table($user_table)->where('token', $token)->find_one();
     
     $list = [];
-    foreach(ORM::for_table($user_table)->find_result_set() as $user_list) {
+    foreach(ORM::for_table($user_table)->find_result_set() as $user_list){
         $list[] = ($user_list->as_array('token'));
     }
     // var_dump($list);
