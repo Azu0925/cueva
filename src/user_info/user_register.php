@@ -39,7 +39,7 @@ if((empty($_POST['user_address']))){
     echo json_encode($error);
     exit;
 }
-if((empty($_POST['usser_password']))){
+if((empty($_POST['user_password']))){
     $error = array(
         "error" => array(
             array(
@@ -60,7 +60,7 @@ const PASS = "/^[a-zA-Z0-9]{8,30}+$/";
 // const NAME = "/^.{1,30}+$/";
 //入力値の受け取り
 $name = $_POST['user_name'];
-$address = $_POST['user_address'];
+$user_address = $_POST['user_address'];
 $password = $_POST['user_password'];
 
 //名前の文字数制限
@@ -95,7 +95,7 @@ if(!preg_match(PASS,$_POST['user_password'])){
     exit;
 }
 //アドレスの文字制限
-if(!preg_match(MAIL,$address)){
+if(!preg_match(MAIL,$user_address)){
     $error = array(
         "error" => array(
             array(
@@ -121,7 +121,7 @@ if(!preg_match(MAIL,$address)){
 //     exit;
 // }
 //アドレスに＠が含まれるかどうかチェック
-$heystack = $address; // 捜査対象となる文字列
+$heystack = $user_address; // 捜査対象となる文字列
 $needle   = '@'; // 見つけたい文字列
 if ( strpos( $heystack, $needle ) === false ) {
     $error = array(
@@ -140,7 +140,7 @@ $hash = password_hash($password, PASSWORD_DEFAULT);
 //ユーザー情報の登録
 $person = ORM::for_table($table)->create();
 $person->user_name = $name;
-$person->user_address = $address;
+$person->user_address = $user_address;
 $person->user_password = $hash;
 $person->save();
 //insert失敗の処理   
@@ -161,28 +161,15 @@ if(!$person->save()){
 $token = uniqid(dechex(random_int(0, 255)));
 $person = ORM::for_table('user')->where('user_address', $user_address)->find_one();
 $people = ORM::for_table('user')->find_many();
-foreach ($people as $person) {
-    $person->token = $token;
-    $person->save();
-}
+
+$person->token = $token;
+$person->save();
+
 //jsonの返却
 $response = array(
-    'user' => $person,
+    "result" => array(
+        "token" => $token
+    )
 );
 echo json_encode($response);
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="./user_register.php" method="post" >
-    <p>氏名<input type="text" name="user_name"><br>
-    <button type="submit">登録する</button></p>
-    </form>
-</body>
-</html>
