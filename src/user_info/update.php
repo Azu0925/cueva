@@ -40,6 +40,7 @@
         array('code' => '401','message' => 'Unauthorized')),
     );
         echo json_encode($err);
+        exit;
 }
 
     //アカウント内容の変更
@@ -57,7 +58,8 @@
         array('code' => '452','message' => 'Insert error for database')),
     );
         echo json_encode($err);
-    }
+        exit;
+}
     
     //jsonで返却
     $response = array(
