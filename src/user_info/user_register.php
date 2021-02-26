@@ -126,7 +126,7 @@ $person->user_address = $address;
 $person->user_password = $hash;
 $person->save();
 //insert失敗の処理   
-if(($person->save())){
+if(!$person->save()){
     $error = array(
         "error" => array(
             array(
