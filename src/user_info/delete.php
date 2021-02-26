@@ -12,14 +12,44 @@ use Cueva\Classes\ {Env, Func};
 
 //バリデーションチェック(勝手にアドレスとパスワードを入力させて退会すると思って書きました)
 if((empty($_POST['user_address']))){
-    $err_address = "Validation error for 'address'";
-        if((empty($_POST['usser_password']))){
-            $err_pass = "Validation error for 'password'";
-        }
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "451",
+                "message" => "Validation error for 'address"
+            )
+        )
+    );
+    echo json_encode($error);
+    exit;
+}
+if((empty($_POST['user_password']))){
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "451",
+                "message" => "Validation error for 'password'"
+            )
+        )
+    );
+    echo json_encode($error);
+    exit;
+}
+
+if((empty($_COOKIE['token']))){
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "401",
+                "message" => "Unauthorized"
+            )
+        )
+    );
+    echo json_encode($error);
     exit;
 }
 //送られてきたトークンからユーザー情報を取得
-$person = ORM::for_table('user')->where('token', $_POST['token'])->find_mamy();
+$person = ORM::for_table('user')->where('token', $_POST['token'])->find_many();
 //ユーザー情報が見つからなかった時のエラー　見つかったらレコードの削除
 // if((empty($person['user_id']))){
 //     $err = "Not Found 404";
