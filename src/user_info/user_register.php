@@ -57,18 +57,37 @@ const MAIL = "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-
 //ログインID
 const PASS = "/^[a-zA-Z0-9]{8,30}+$/";
 //名前
-const NAME = "/^.{1,30}+$/";
+// const NAME = "/^.{1,30}+$/";
 //入力値の受け取り
 $name = $_POST['user_name'];
 $address = $_POST['user_address'];
 $password = $_POST['user_password'];
+
+//名前の文字数制限
+$max = 30;
+$min = 1;
+$name_len = strlen($name);
+if($max < $name_len || $name_len < $min){
+    $error = array(
+        "error" => array(
+            array(
+                "code" => "451",
+                "message" => "Validation error for 'name'"
+            )
+        )
+    );
+    echo json_encode($error);
+    exit;
+}
+
+
 //パスワードの文字数制限
 if(!preg_match(PASS,$_POST['user_password'])){
     $error = array(
         "error" => array(
             array(
-                "code" => "400",
-                "message" => "Bad Request"
+                "code" => "451",
+                "message" => "Validation error for 'password'"
             )
         )
     );
@@ -81,26 +100,26 @@ if(!preg_match(MAIL,$address)){
         "error" => array(
             array(
                 "code" => "400",
-                "message" => 'Bad Request'
+                "message" => "Validation error for 'password'"
             )
         )
     );
     echo json_encode($error);
     exit;
 }
-//名前の文字制限
-if(!preg_match(NAME,$name)){
-    $error = array(
-        "error" => array(
-            array(
-                "code" => "400",
-                "message" => 'Bad Request'
-            )
-        )
-    );
-    echo json_encode($error);
-    exit;
-}
+// //名前の文字制限
+// if(!preg_match(NAME,$name)){
+//     $error = array(
+//         "error" => array(
+//             array(
+//                 "code" => "400",
+//                 "message" => 'Bad Request'
+//             )
+//         )
+//     );
+//     echo json_encode($error);
+//     exit;
+// }
 //アドレスに＠が含まれるかどうかチェック
 $heystack = $address; // 捜査対象となる文字列
 $needle   = '@'; // 見つけたい文字列
