@@ -10,32 +10,6 @@ use Cueva\Classes\ {Env, Func};
     ORM::configure('password', Env::get("PASSWORD"));
     ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 
-//バリデーションチェック(勝手にアドレスとパスワードを入力させて退会すると思って書きました)
-if((empty($_POST['user_address']))){
-    $error = array(
-        "error" => array(
-            array(
-                "code" => "451",
-                "message" => "Validation error for 'address"
-            )
-        )
-    );
-    echo json_encode($error);
-    exit;
-}
-if((empty($_POST['user_password']))){
-    $error = array(
-        "error" => array(
-            array(
-                "code" => "451",
-                "message" => "Validation error for 'password'"
-            )
-        )
-    );
-    echo json_encode($error);
-    exit;
-}
-
 if((empty($_POST['token']))){
     $error = array(
         "error" => array(
@@ -49,7 +23,8 @@ if((empty($_POST['token']))){
     exit;
 }
 //送られてきたトークンからユーザー情報を取得
-$person = ORM::for_table('user')->where('token', $_POST['token'])->find_many();
+$person = ORM::for_table('user')->where('token', $_POST['token'])->find_one()->as_array();
+
 //ユーザー情報が見つからなかった時のエラー　見つかったらレコードの削除
 // if((empty($person['user_id']))){
 //     $err = "Not Found 404";
@@ -60,7 +35,7 @@ $person = ORM::for_table('user')->where('token', $_POST['token'])->find_many();
 //     $delete->delete();
 //     $delete_comp = "delete complete";
 // }
-if((empty($person['user_id']))){
+if((empty($person['id']))){
     $error = array(
         "error" => array(
             array(
@@ -73,13 +48,12 @@ if((empty($person['user_id']))){
     exit;
 }
 else{
-    $delete = ORM::for_table('user')->where_like('token',$_POST['token'])->find_many();
+    $delete = ORM::for_table('user')->where_like('token',$_POST['token'])->find_one();
     $delete->delete();
-    $delete_comp = "delete complete";
 }
 //jsonの返却
 $response = array(
-    'delete' => $delete,$delete_comp,
+    "result" => "true"
 );
 echo json_encode($response);
 ?>
