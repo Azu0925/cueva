@@ -25,7 +25,7 @@ if((empty($team))){
             )
         )
     );
-    echo json_encode($eror);
+    echo json_encode($error);
     exit;
 }
 else{
@@ -38,7 +38,6 @@ else{
 //jsonの返却
 $response = array(
     'delete' => $team,$member,$delete_comp,
-    'err' => $err,
 );
 echo json_encode($response);
 ?>
