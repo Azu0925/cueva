@@ -11,12 +11,12 @@ use Cueva\Classes\ {Env, Func};
     ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 
 //送られてきたトークンの値から本人情報を取得
-$person = ORM::for_table('user')->where('token', $_POST['token'])->find_mamy();
+$person = ORM::for_table('user')->where('token', $_COOKIE['token'])->find_mamy();
 //取ってきたユーザーIDから所属チームを取得
-$team = ORM::for_table('member')->where('user_id', $_POST['user_id'])->find_mamy();
+$team = ORM::for_table('member')->where('user_id', $_COOKIE['user_id'])->find_mamy();
 //エラー処理
     //認証失敗
-    if((empty($_POST['token']))){
+    if((empty($_COOKIE['token']))){
         $error = array(
             "error" => array(
                 array(
