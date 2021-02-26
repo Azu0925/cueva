@@ -19,39 +19,42 @@
     if (isset($_POST['token']/*$testToken*/)) {
       $token = $_POST['token']; //tokenを取得し変数へ格納
       $update = ORM::for_table($table)->where('token', $token/*$testToken*/)->find_one();
-      $update->token = NULL;
-      $update->save();
-    
-    if (($update->save())) {
-      $result = array(
-        "result" => array(
-          array(
-            "result" => true
+
+
+
+
+      if ($update != false) {
+        $update->token = NULL;
+        $update->save();
+        $result = array(
+          "result" => array(
+            array(
+              "result" => true
+            )
           )
-        )
-      );
-      echo json_encode($result);
-      exit;
-    }else{
-      $error = array(
-        "error" => array(
-          array(
-            "code" => "452",
-            "message" => "Update error for database"
+        );
+        echo json_encode($result);
+        exit;
+      } else {
+        $error = array(
+          "error" => array(
+            array(
+              "code" => "452",
+              "message" => "Update error for database"
+            )
           )
-        )
-      );
-      echo json_encode($error);
-      exit;
+        );
+        echo json_encode($error);
+        exit;
+      }
     }
-  }
-  $error = array(
-    "error" => array(
-      array(
-        "code" => "404",
-        "message" => "Not Found"
+    $error = array(
+      "error" => array(
+        array(
+          "code" => "404",
+          "message" => "Not Found"
+        )
       )
-    )
-  );
+    );
 
     echo json_encode($error);
