@@ -3,6 +3,9 @@
     use Cueva\Classes\ {Env, Func};
     use Ratchet\MessageComponentInterface;
     use Ratchet\ConnectionInterface;
+
+    require_once '../vendor/j4mie/idiorm/idiorm.php';
+    require '../vendor/autoload.php';
     
     class Map implements MessageComponentInterface {
         protected $clients;
