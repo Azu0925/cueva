@@ -54,8 +54,8 @@
         $error = array(
           "error" => array(
             array(
-              "code" => "400",
-              "message" => "Bad Request"
+              "code" => "403",
+              "message" => "Forbidden"
             )
           )
         );
@@ -67,8 +67,8 @@
     $error = array(
       "error" => array(
         array(
-          "code" => "404",
-          "message" => "Not Found"
+          "code" => "453",
+          "message" => "Paramter is null"
         )
       )
     );
