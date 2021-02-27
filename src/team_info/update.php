@@ -12,11 +12,8 @@
 
 
     //入力値の受け取り
-    $team_id = $_POST['team_id'];
     $team_name = $_POST['team_name'];
     $team_description = $_POST['team_description'];
-    $team_create = $_POST['team_create'];
-    $team_host = $_POST['team_host'];
     
     //table指定
     $user_table = 'user';
@@ -24,18 +21,16 @@
     $team_table = 'team';
 
     //tokenの取得
-    $token = $_COOKIE['token'];
+    $token = $_POST['token'];
 
     //登録されているユーザー情報取得
     $user_list = ORM::for_table($user_table)->where('token', $token)->find_one();
     
-    $list = [];
-    foreach(ORM::for_table($user_table)->find_result_set() as $user_list) {
-        $list[] = ($user_list->as_array('user_id','token'));
-    }
+    // $list = [];
+    // foreach(ORM::for_table($user_table)->find_result_set() as $user_list) {
+    //     $list[] = ($user_list->as_array('user_id','token'));
+    // }
     // var_dump($list);
-
-    $user_id = $list['user_id'];
     
     //tokenの照合
     if($token !== $user_list['token']){
@@ -48,48 +43,60 @@
         echo json_encode($err);
         exit;
 }
+    //ユーザーidの取得
+    $user_id = $uesr_list['id'];
 
-    //member_tableからユーザーidとチームidの情報取得
-    $member_list = ORM::for_table($member_table)->where('user_id', $user_id)->find_many();
+    //member_tableからユーザーidの情報取得
+    $member_list = ORM::for_table($member_table)->where('user_id', $user_id)->find_one();
     
-    $list = [];
-    foreach(ORM::for_table($member_table)->find_result_set() as $member_list) {
-        $list[] = ($member_list->as_array('member_no','user_id','team_id','member_invitation'));
-    }
+    // $list = [];
+    // foreach(ORM::for_table($member_table)->find_result_set() as $member_list) {
+    //     $list[] = ($member_list->as_array('member_no','user_id','team_id','member_invitation'));
+    // }
     // var_dump($list);
 
-    //チームにユーザーが所属しているかチェック
     if($user_id !== $member_list['user_id']){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
         array( 
-        array('code' => '403','message' => 'Forbidden')),
+        array('code' => '404','message' => 'Not Found')),
     );
         echo json_encode($err);
         exit;
 }
-    
-
     //member_tableからteam_idの取得
-    $team_id = $list['team_id'];
+    $team_id = $member_list['team_id'];
 
-    //team_tableから登録されているチームidの全件取得
-    $team_list = ORM::for_table($team_table)->where('team_id', $team_id)->find_one();
+    //team_tableから登録されているidの取得
+    $team_list = ORM::for_table($team_table)->where('id', $team_id)->find_one();
     
-    $list = [];
-    foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
-        $list[] = ($team_list->as_array('team_id'));
-    }
+    // $list = [];
+    // foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
+    //     $list[] = ($team_list->as_array('team_id'));
+    // }
+
     // var_dump($team_list);
 
+    //チームにユーザーが所属しているかチェック
+    if($team_id !== $team_list['id']){
+        //エラー内容
+        //jsonでエラーメッセージの返却
+        $err = array('error' =>
+        array( 
+        array('code' => '404','message' => 'Not Found')),
+    );
+        echo json_encode($err);
+        exit;
+}
+
     //チーム情報の変更
-    $team_info = ORM::for_table($team_table)->where('team_id',$id)->find_result_set()
-    ->set('team_id',$team_id ,'team_name',$team_name ,'team_description',$team_description,'team_create',$team_create,'team_host',$team_host)
+    $update_team = ORM::for_table($team_table)->where('id',$team_id)->find_result_set()
+    ->set('team_name',$team_name ,'team_description',$team_description)
     ->save();
 
     //チーム内容変更時エラーメッセージ
-    if(!$team_table){
+    if(!$update_team->save()){
         //エラー内容
         //jsonでエラーメッセージの返却
         array('error' =>
@@ -97,6 +104,7 @@
         array('code' => '452','message' => 'Insert error for database')),
     );
         echo json_encode($err);
+        exit;
 }
         
     //jsonの返却
