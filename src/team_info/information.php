@@ -30,7 +30,19 @@ $team = ORM::for_table('team')->where_like('team_id',$member['team_id'])->find_m
         exit;
     }
     //リソースが見つからなかった時
-    if((empty($user))){
+    if((empty($user))){//ユーザーが見つからなかった時
+        $error = array(
+            "error" => array(
+                array(
+                    "code" => "403",
+                    "message" => "Not Found"
+                )
+            )
+        );
+        echo json_encode($error);
+        exit;
+    }
+    if((empty($team))){//チームが見つからなかった時
         $error = array(
             "error" => array(
                 array(
@@ -42,7 +54,8 @@ $team = ORM::for_table('team')->where_like('team_id',$member['team_id'])->find_m
         echo json_encode($error);
         exit;
     }
-    if((empty($team))){
+
+    if((empty($member))){//チームメンバーじゃなかった時
         $error = array(
             "error" => array(
                 array(
@@ -53,7 +66,7 @@ $team = ORM::for_table('team')->where_like('team_id',$member['team_id'])->find_m
         );
         echo json_encode($error);
         exit;
-    }
+    }  
 //jsonの返却
 $response = array(
     "result" => "true"
