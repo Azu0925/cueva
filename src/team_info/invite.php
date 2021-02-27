@@ -27,16 +27,16 @@
     // var_dump($list);
     
     //tokenの照合
-//     if($token !== $user_list['token']){
-//         //エラー内容
-//         //jsonでエラーメッセージの返却
-//         $err = array('error' =>
-//         array( 
-//         array('code' => '401','message' => 'Unauthorized')),
-//     );
-//         echo json_encode($err);
-//         exit;
-// }
+    if($token !== $user_list['token']){
+        //エラー内容
+        //jsonでエラーメッセージの返却
+        $err = array('error' =>
+        array( 
+        array('code' => '401','message' => 'Unauthorized')),
+    );
+        echo json_encode($err);
+        exit;
+}
 
     //user_idの取得
     $user_id = $_POST['user_id'];
@@ -46,7 +46,7 @@
 
     //memberテーブルにチーム招待の情報を保存
     $new_member = ORM::for_table($member_table)->create();
-    $new_member->user_id_ = $user_id;
+    $new_member->user_id = $user_id;
     $new_member->team_id = $team_id;
     $new_member->member_invitation = 0;
     $new_member->save();
