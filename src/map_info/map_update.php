@@ -21,7 +21,7 @@
     $parameter_right = $_POST['parameter_right'];
 
     //map_idの取得
-    $map_id = $_COOKIE['map_id'];
+    $map_id = $_POST['map_id'];
 
     //table指定
     $map_table = 'map';
@@ -32,7 +32,7 @@
         ->save();
     
     //map編集時エラーメッセージ
-    if(!$map_update){
+    if(!$map_update->save()){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array(
@@ -41,7 +41,8 @@
         array('code' => '452','message' => 'Insert error for database')),
     );
         echo json_encode($err);
-    }
+        exit;
+}
     
     //jsonで返却
     $response = array(
