@@ -21,7 +21,56 @@
     $parameter_right = $_POST['parameter_right'];
 
     //table指定
+    $user_table = 'user';
+    $member_table = 'member';
     $map_table = 'map';
+
+    //tokenの取得
+    $token = $_POST['token'];
+
+    //登録されているユーザー情報取得
+    $user_list = ORM::for_table($user_table)->where('token', $token)->find_one();
+    
+    $list = [];
+    foreach(ORM::for_table($user_table)->find_result_set() as $user_list) {
+        $list = ($user_list->as_array('token'));
+    }
+    // var_dump($list);
+    
+    //tokenの照合
+    if($token !== $user_list['token']){
+        //エラー内容
+        //jsonでエラーメッセージの返却
+        $err = array('error' =>
+        array( 
+        array('code' => '401','message' => 'Unauthorized')),
+    );
+        echo json_encode($err);
+        exit;
+}
+    //user_idの取得
+    $user_id = $user_list['id'];
+
+    //メンバー情報取得
+    $member_list = ORM::for_table($member_table)->where('user_id', $user_id)->find_one();
+    
+    $list = [];
+    foreach(ORM::for_table($member_table)->find_result_set() as $member_list) {
+        $list = ($member_list->as_array('user_id'));
+    }
+    // var_dump($list);
+    
+    //user_idの照合
+    if($user_id !== $member_list['user_id']){
+        //エラー内容
+        //jsonでエラーメッセージの返却
+        $err = array('error' =>
+        array( 
+        array('code' => '403','message' => 'Forbidden')),
+    );
+        echo json_encode($err);
+        exit;
+}
 
     //map_idの取得
     $map_id = $_POST['id'];
