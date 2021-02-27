@@ -28,7 +28,7 @@
     
     $list = [];
     foreach(ORM::for_table($user_table)->find_result_set() as $user_list) {
-        $list = ($user_list->as_array('user_id','token'));
+        $list = ($user_list->as_array('token'));
     }
     // var_dump($list);
     
@@ -43,19 +43,21 @@
         echo json_encode($err);
         exit;
 }
-    //ユーザーidの取得
-    $user_id = $uesr_list['id'];
+
+    //team_idの取得
+    $team_id = $_POST['team_id'];
 
     //member_tableからユーザーidの情報取得
-    $member_list = ORM::for_table($member_table)->where('user_id', $user_id)->find_one();
+    $member_list = ORM::for_table($member_table)->where('team_id', $team_id)->find_one();
     
     $list = [];
     foreach(ORM::for_table($member_table)->find_result_set() as $member_list) {
-        $list[] = ($member_list->as_array('user_id','team_id'));
+        $list[] = ($member_list->as_array('team_id'));
     }
     // var_dump($list);
 
-    if($user_id !== $member_list['user_id']){
+    //team_idの照合
+    if($team_id !== $member_list['tesm_id']){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
@@ -65,9 +67,7 @@
         echo json_encode($err);
         exit;
 }
-    //member_tableからteam_idの取得
-    $team_id = $member_list['team_id'];
-
+    
     //team_tableから登録されているidの取得
     $team_list = ORM::for_table($team_table)->where('id', $team_id)->find_one();
     
@@ -84,7 +84,7 @@
         //jsonでエラーメッセージの返却
         $err = array('error' =>
         array( 
-        array('code' => '404','message' => 'Not Found')),
+        array('code' => '403','message' => 'Forbidden')),
     );
         echo json_encode($err);
         exit;
