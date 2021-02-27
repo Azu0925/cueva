@@ -54,10 +54,10 @@
     foreach(ORM::for_table($member_table)->find_result_set() as $member_list) {
         $list[] = ($member_list->as_array('team_id'));
     }
-    // var_dump($list);
+    // // var_dump($list);
 
     //team_idの照合
-    if($team_id !== $member_list['tesm_id']){
+    if($team_id !== $member_list['team_id']){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
