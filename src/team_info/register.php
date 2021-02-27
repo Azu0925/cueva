@@ -79,7 +79,7 @@
 
     //memberテーブルに作成者追加
     $new_member = ORM::for_table($member_table)->create();
-    $new_member->user_id_ = $user_id;
+    $new_member->user_id = $user_id;
     $new_member->team_id = $team_id;
     $new_member->member_invitation = 1;
     $new_member->save();
