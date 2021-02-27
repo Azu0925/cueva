@@ -48,7 +48,7 @@
     $team_id = $_POST['team_id'];
 
     //member_tableからユーザーidの情報取得
-    $member_list = ORM::for_table($member_table)->where('team_id', $team_id)->find_one();
+    $member_list = ORM::for_table($member_table)->where('team_id', $team_id)->find_many();
     
     $list = [];
     foreach(ORM::for_table($member_table)->find_result_set() as $member_list) {
@@ -69,7 +69,7 @@
 }
     
     //team_tableから登録されているidの取得
-    $team_list = ORM::for_table($team_table)->where('id', $team_id)->find_one();
+    $team_list = ORM::for_table($team_table)->where('id', $team_id)->find_many();
     
     $list = [];
     foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
