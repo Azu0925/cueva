@@ -26,10 +26,10 @@
     //登録されているユーザー情報取得
     $user_list = ORM::for_table($user_table)->where('token', $token)->find_one();
     
-    // $list = [];
-    // foreach(ORM::for_table($user_table)->find_result_set() as $user_list) {
-    //     $list[] = ($user_list->as_array('user_id','token'));
-    // }
+    $list = [];
+    foreach(ORM::for_table($user_table)->find_result_set() as $user_list) {
+        $list = ($user_list->as_array('user_id','token'));
+    }
     // var_dump($list);
     
     //tokenの照合
@@ -49,10 +49,10 @@
     //member_tableからユーザーidの情報取得
     $member_list = ORM::for_table($member_table)->where('user_id', $user_id)->find_one();
     
-    // $list = [];
-    // foreach(ORM::for_table($member_table)->find_result_set() as $member_list) {
-    //     $list[] = ($member_list->as_array('member_no','user_id','team_id','member_invitation'));
-    // }
+    $list = [];
+    foreach(ORM::for_table($member_table)->find_result_set() as $member_list) {
+        $list[] = ($member_list->as_array('user_id','team_id'));
+    }
     // var_dump($list);
 
     if($user_id !== $member_list['user_id']){
@@ -71,10 +71,10 @@
     //team_tableから登録されているidの取得
     $team_list = ORM::for_table($team_table)->where('id', $team_id)->find_one();
     
-    // $list = [];
-    // foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
-    //     $list[] = ($team_list->as_array('team_id'));
-    // }
+    $list = [];
+    foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
+        $list[] = ($team_list->as_array('team_id'));
+    }
 
     // var_dump($team_list);
 
@@ -89,10 +89,13 @@
         echo json_encode($err);
         exit;
 }
+    //現在の日時の取得
+    $team_create = date('Y-m-d H:i:s');
+    //var_dump( $team_create);
 
     //チーム情報の変更
     $update_team = ORM::for_table($team_table)->where('id',$team_id)->find_result_set()
-    ->set('team_name',$team_name ,'team_description',$team_description)
+    ->set('team_name',$team_name , 'team_description',$team_description , 'team_create',$team_create)
     ->save();
 
     //チーム内容変更時エラーメッセージ
