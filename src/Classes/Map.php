@@ -4,9 +4,6 @@
     use Ratchet\MessageComponentInterface;
     use Ratchet\ConnectionInterface;
 
-    require_once '../vendor/j4mie/idiorm/idiorm.php';
-    require '../vendor/autoload.php';
-    
     class Map implements MessageComponentInterface {
         protected $clients;
         private $subscriptions;
@@ -37,28 +34,23 @@
                         $target = $this->subscriptions[$conn->resourceId];
                         foreach ($this->subscriptions as $id=>$channel) {
                             if ($channel == $target) {
-                                // envファイルの読み込み ※必要ないかも
-                                // require dirname(__FILE__).'/../vendor/autoload.php';
-                                // $dotenv = Dotenv\Dotenv::createImmutable(__DIR__. '/..');
-                                // $dotenv->load();
-
+                                // インスタンス生成
+                                $env = new Env;
                                 // DB接続
-                                ORM::configure('mysql:host='.Env::get("HOST").';port='.Env::get("PORT").';dbname='.Env::get("DB_NAME"));
-                                ORM::configure('username', Env::get('USER_ID'));
-                                ORM::configure('password', Env::get("PASSWORD"));
-                                ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+                                $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
+                                mysqli_set_charset($link, 'utf8');
 
-                                $table = 'map'; //テーブルの名前
-                                $query = ORM::for_table($table)->where(array('team_id' => $data->message))->find_many(); // 該当データの取り出し
-
-                                // 連想配列を二次元配列に格納
-                                $map_list = []; 
-                                foreach(ORM::for_table($table)->find_result_set() as $query) {
-                                    $map_list[] = ($query->as_array('map_id', 'map_name', 'map_description', 'map_create', 'map_host', 'team_id', 'parameter_top', 'parameter_under', 'parameter_left', 'parameter_right'));
+                                // 返却するリスト生成 ".$data->message
+                                $query = mysqli_query($link, "SELECT * FROM map WHERE team_id = ".$data->message);
+                                $maps_list = [];
+                                while($row = mysqli_fetch_assoc($query)){
+                                    $maps_list[] = $row;
                                 }
+                                // var_dump($maps_list);
+
                                 // JSON形式で返却
-                                $json_map_list = json_encode($map_list);
-                                $this->users[$id]->send($json_map_list);
+                                $json_maps_list = json_encode($maps_list);
+                                $this->users[$id]->send($json_maps_list);
                             }                       
                         }
                     }
@@ -67,25 +59,20 @@
                         $target = $this->subscriptions[$conn->resourceId];
                         foreach ($this->subscriptions as $id=>$channel) {
                             if ($channel == $target) {
-                                // envファイルの読み込み ※必要ないかも
-                                // require dirname(__FILE__).'/../vendor/autoload.php';
-                                // $dotenv = Dotenv\Dotenv::createImmutable(__DIR__. '/..');
-                                // $dotenv->load();
-
+                                // インスタンス生成
+                                $env = new Env;
                                 // DB接続
-                                ORM::configure('mysql:host='.Env::get("HOST").';port='.Env::get("PORT").';dbname='.Env::get("DB_NAME"));
-                                ORM::configure('username', Env::get('USER_ID'));
-                                ORM::configure('password', Env::get("PASSWORD"));
-                                ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+                                $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
+                                mysqli_set_charset($link, 'utf8');
 
-                                $table = 'map'; //テーブルの名前
-                                $query = ORM::for_table($table)->where(array('map_id' => $data->message))->find_many(); // 該当データの取り出し
-
-                                // 連想配列を二次元配列に格納
-                                $map_list = []; 
-                                foreach(ORM::for_table($table)->find_result_set() as $query) {
-                                    $map_list[] = ($query->as_array('map_id', 'map_name', 'map_description', 'map_create', 'map_host', 'team_id', 'parameter_top', 'parameter_under', 'parameter_left', 'parameter_right'));
+                                // 返却するリスト生成
+                                $query = mysqli_query($link, "SELECT * FROM map WHERE id = ".$data->message);
+                                $map_list = [];
+                                while($row = mysqli_fetch_assoc($query)){
+                                    $map_list[] = $row;
                                 }
+                                // var_dump($map_list);
+
                                 // JSON形式で返却
                                 $json_map_list = json_encode($map_list);
                                 $this->users[$id]->send($json_map_list);
@@ -97,28 +84,23 @@
                         $target = $this->subscriptions[$conn->resourceId];
                         foreach ($this->subscriptions as $id=>$channel) {
                             if ($channel == $target) {
-                                // envファイルの読み込み ※必要ないかも
-                                // require dirname(__FILE__).'/../vendor/autoload.php';
-                                // $dotenv = Dotenv\Dotenv::createImmutable(__DIR__. '/..');
-                                // $dotenv->load();
-
+                                // インスタンス生成
+                                $env = new Env;
                                 // DB接続
-                                ORM::configure('mysql:host='.Env::get("HOST").';port='.Env::get("PORT").';dbname='.Env::get("DB_NAME"));
-                                ORM::configure('username', Env::get('USER_ID'));
-                                ORM::configure('password', Env::get("PASSWORD"));
-                                ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+                                $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
+                                mysqli_set_charset($link, 'utf8');
 
-                                $table = 'card'; //テーブルの名前
-                                $query = ORM::for_table($table)->where(array('map_id' => $data->message))->find_many(); // 該当データの取り出し
-
-                                // 連想配列を二次元配列に格納
-                                $card_list = []; 
-                                foreach(ORM::for_table($table)->find_result_set() as $query) {
-                                    $card_list[] = ($query->as_array('card_id', 'card_name', 'card_description', 'update_date', 'update_user', 'card_x', 'card_y', 'card_width', 'card_height', 'map_id'));
+                                // 返却するリスト生成
+                                $query = mysqli_query($link, "SELECT * FROM card WHERE map_id = ".$data->message);
+                                $cards_list = [];
+                                while($row = mysqli_fetch_assoc($query)){
+                                    $cards_list[] = $row;
                                 }
+                                // var_dump($cards_list);
+
                                 // JSON形式で返却
-                                $json_card_list = json_encode($card_list);
-                                $this->users[$id]->send($json_card_list);
+                                $json_cards_list = json_encode($cards_list);
+                                $this->users[$id]->send($json_cards_list);
                             }                   
                         }
                     }
@@ -127,29 +109,23 @@
                         $target = $this->subscriptions[$conn->resourceId];
                         foreach ($this->subscriptions as $id=>$channel) {
                             if ($channel == $target) {
-                                // envファイルの読み込み ※必要ないかも
-                                // require dirname(__FILE__).'/../vendor/autoload.php';
-                                // $dotenv = Dotenv\Dotenv::createImmutable(__DIR__. '/..');
-                                // $dotenv->load();
-
+                                // インスタンス生成
+                                $env = new Env;
                                 // DB接続
-                                ORM::configure('mysql:host='.Env::get("HOST").';port='.Env::get("PORT").';dbname='.Env::get("DB_NAME"));
-                                ORM::configure('username', Env::get('USER_ID'));
-                                ORM::configure('password', Env::get("PASSWORD"));
-                                ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+                                $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
+                                mysqli_set_charset($link, 'utf8');
 
-                                $table = 'card'; //テーブルの名前
-                                $query = ORM::for_table($table)->where(array('card_id' => $data->message))->find_many(); // 該当データの取り出し
-
-                                // 連想配列を二次元配列に格納
-                                $card_list = []; 
-                                foreach(ORM::for_table($table)->find_result_set() as $query) {
-                                    $card_list[] = ($query->as_array('card_id', 'card_name', 'card_description', 'update_date', 'update_user', 'card_x', 'card_y', 'card_width', 'card_height', 'map_id'));
+                                // 返却するリスト生成
+                                $query = mysqli_query($link, "SELECT * FROM card WHERE id = ".$data->message);
+                                $card_list = [];
+                                while($row = mysqli_fetch_assoc($query)){
+                                    $card_list[] = $row;
                                 }
+                                // var_dump($card_list);
+
                                 // JSON形式で返却
                                 $json_card_list = json_encode($card_list);
                                 $this->users[$id]->send($json_card_list);
-
                             }                   
                         }
                     }
