@@ -17,7 +17,7 @@ $member = ORM::for_table('member')->where_like('user_id',$user['user_id'])->find
 $team = ORM::for_table('team')->where_like('team_id',$member['team_id'])->find_many();
 //エラー処理
     //認証失敗
-    if((empty($_COOKIE['token']))){
+    if((empty($_POST['token']))){
         $error = array(
             "error" => array(
                 array(
@@ -56,8 +56,7 @@ $team = ORM::for_table('team')->where_like('team_id',$member['team_id'])->find_m
     }
 //jsonの返却
 $response = array(
-    'user' => $user,
-    'team' => $team,
+    "result" => "true"
 );
 echo json_encode($response);
 ?>
