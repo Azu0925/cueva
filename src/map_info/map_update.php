@@ -20,15 +20,28 @@
     $parameter_left = $_POST['parameter_left'];
     $parameter_right = $_POST['parameter_right'];
 
-    //map_idの取得
-    $map_id = $_POST['map_id'];
-
     //table指定
     $map_table = 'map';
 
+    //map_idの取得
+    $map_id = $_POST['id'];
+
+    //mapテーブルかｒ情報取得
+    $map_list = ORM::for_table($map_table)->where('id', $map_id)->find_many();
+    
+    $list = [];
+    foreach(ORM::for_table($map_table)->find_result_set() as $map_list) {
+        $list[] = ($map_list->as_array('id'));
+    }
+    // // var_dump($list);
+
+    //現在の日時の取得
+    $map_create = date('Y-m-d H:i:s');
+    //var_dump( $map_create);
+
     //map編集
-    $map_update = ORM::for_table($map_table)->where('map_id',$map_id)->find_result_set()
-        ->set('map_name',$map_name ,'map_description',$map_description , 'map_host',$map_host , 'parameter_top',$parameter_top , 'parameter_under',$parameter_under , 'parameter_left',$parameter_left ,'parameter_right',$parameter_right)
+    $map_update = ORM::for_table($map_table)->where('id',$map_id)->find_result_set()
+        ->set('map_name',$map_name ,'map_description',$map_description , 'map_create',$map_create , 'map_host',$map_host , 'parameter_top',$parameter_top , 'parameter_under',$parameter_under , 'parameter_left',$parameter_left ,'parameter_right',$parameter_right)
         ->save();
     
     //map編集時エラーメッセージ
