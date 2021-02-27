@@ -13,28 +13,30 @@
     ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
     
 
-    //tokenとmap_idの検索
+    //tokenとcard_idの検索
     if (isset($_POST['token']) && isset($_POST['card_id'])) {
       $token = $_POST['token'];  //tokenを取得し変数へ格納
-      $card_id = $_POST['card_id']; //map_idを取得し変数へ格納
+      $card_id = $_POST['card_id']; //card_idを取得し変数へ格納
       $select = ORM::for_table('v_card_info')
         ->where(array(
           'token' => $token,
           'c_id' => $card_id
         ))
         ->find_one();
-      if ($select != false) { //card更新ユーザー名の取得
-        $map_id = $select->m_id;//map_idの取得
-        $information = ORM::for_table("card")->where(array(
-          'id' => $card_id,
-          'map_id' => $map_id
-        ))
-        ->find_array(); 
-        if ($information != false) { //結果
-          $result = $information;
+      if ($select != false) { 
+        $delete = ORM::for_table("card")->where('id', $card_id)->find_one();
+        if ($delete != false) {
+          $delete->delete();
+          $result = array(
+            "result" => array(
+              array(
+                "result" => true
+              )
+            )
+          );
           echo json_encode($result);
           exit;
-        } else { //information取得失敗
+        } else { //delete失敗
           $error = array(
             "error" => array(
               array(
