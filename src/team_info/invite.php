@@ -62,8 +62,6 @@
         exit;
 }
 
-
-
     //jsonの返却
     $response = array(
         'result' => true,
