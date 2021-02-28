@@ -28,7 +28,7 @@
     
     $list = [];
     foreach(ORM::for_table($user_table)->find_result_set() as $user_list) {
-        $list = ($user_list->as_array('token'));
+        $list = ($user_list->as_array('user_name','token'));
     }
     // var_dump($list);
     
@@ -43,6 +43,9 @@
         echo json_encode($err);
         exit;
 }
+
+    //user_nameの取得
+    $user_name = $list['user_name'];
 
     //team_idの取得
     $team_id = $_POST['team_id'];
@@ -95,7 +98,7 @@
 
     //チーム情報の変更
     $update_team = ORM::for_table($team_table)->where('id',$team_id)->find_result_set()
-    ->set('team_name',$team_name , 'team_description',$team_description , 'team_create',$team_create)
+    ->set('team_name',$team_name , 'team_description',$team_description , 'team_create',$team_create , 'team_host',$user_name)
     ->save();
 
     //チーム内容変更時エラーメッセージ
