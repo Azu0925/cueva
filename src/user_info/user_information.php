@@ -55,7 +55,13 @@ $team = ORM::for_table('member')->where('user_id', $_POST['user_id'])->find_many
     }
 //jsonの返却
 $response = array(
-    "result" => "true"
+    "result" => [
+    "user_name" => $person,
+    "user_address" =>$mail,    
+    "team_id" =>$team
+    ]
 );
+
+ 
 echo json_encode($response);
 ?>
