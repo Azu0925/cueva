@@ -26,10 +26,10 @@
     //登録されているユーザー情報取得
     $user_list = ORM::for_table($user_table)->where('token', $token)->find_one();
     
-    $list = [];
+    /*$list = [];
     foreach(ORM::for_table($user_table)->find_result_set() as $user_list) {
         $list = ($user_list->as_array('user_name','token'));
-    }
+    }*/
     // var_dump($list);
     
     //tokenの照合
@@ -44,54 +44,37 @@
         exit;
 }
 
+    //userテーブルのidを取得
+    $user_id = $user_list['id'];
+
     //user_nameの取得
-    $user_name = $list['user_name'];
+    $user_name = $user_list['user_name'];
 
     //team_idの取得
     $team_id = $_POST['team_id'];
 
     //member_tableからユーザーidの情報取得
-    $member_list = ORM::for_table($member_table)->where('team_id', $team_id)->find_many();
-    
-    $list = [];
-    foreach(ORM::for_table($member_table)->find_result_set() as $member_list) {
-        $list[] = ($member_list->as_array('team_id'));
-    }
-    // // var_dump($list);
+    $member_list = ORM::for_table($member_table)
+        ->where(
+            array(
+                'team_id' => $team_id,
+                'user_id' => $user_id
+            )
+        )
+        ->find_one();
 
     //team_idの照合
-    if($team_id !== $member_list['team_id']){
+    if($member_list === false){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
         array( 
-        array('code' => '404','message' => 'Not Found')),
-    );
+            array('code' => '403','message' => 'Forbidden')),
+        );
         echo json_encode($err);
         exit;
-}
-    
-    //team_tableから登録されているidの取得
-    $team_list = ORM::for_table($team_table)->where('id', $team_id)->find_many();
-    
-    $list = [];
-    foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
-        $list[] = ($team_list->as_array('team_id'));
     }
 
-    // var_dump($team_list);
-
-    //チームにユーザーが所属しているかチェック
-    if($team_id !== $team_list['id']){
-        //エラー内容
-        //jsonでエラーメッセージの返却
-        $err = array('error' =>
-        array( 
-        array('code' => '403','message' => 'Forbidden')),
-    );
-        echo json_encode($err);
-        exit;
-}
     //現在の日時の取得
     $team_create = date('Y-m-d H:i:s');
     //var_dump( $team_create);
