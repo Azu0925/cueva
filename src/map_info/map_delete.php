@@ -1,4 +1,7 @@
     <?php
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: X-Requested-With, Origin, X-Csrftoken, Content-Type, Accept");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, HEAD");
     //これをsrc直下にコピーしてファイル名の「.sample」部分を削除して動かしてちょ
 
     use Cueva\Classes\{Env, Func};
