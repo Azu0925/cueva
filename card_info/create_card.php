@@ -1,7 +1,9 @@
 <?php
 //DB接続
 use Cueva\Classes\ {Env, Func};
-
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: X-Requested-With, Origin, X-Csrftoken, Content-Type, Accept");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, HEAD");
     require_once '../../vendor/j4mie/idiorm/idiorm.php';
     require '../../vendor/autoload.php';
 
@@ -28,11 +30,12 @@ if ((isset($card_name) == false) && ($card_name == NULL)) { //バリデーショ
   exit;
 }
 $card_discription = $_POST['discription'];//カードの説明文
-$update = '初期値';
-$card_x = '初期値';
-$card_y = '初期値';
-$card_width	= '初期値';
-$card_height = '初期値';
+$update_date = $_POST['update_date'];
+$update_user = $_POST['update_user'];
+$card_x = $_POST['card_x'];
+$card_y = $_POST['card_y'];
+$card_width	= $_POST['card_width'];
+$card_height = $_POST['card_height'];
 
 //名前の文字数制限
 $max = 30;
@@ -71,7 +74,8 @@ if (isset($_POST['token']) && isset($_POST['map_id'])) {
         $person = ORM::for_table($table)->create();
         $person->card_name = $card_name;
         $person->card_discription = $card_discription;
-        $person->update =$update;
+        $person->update_date =$update_date;
+        $person->update_user =$update_user;
         $person->card_x =$card_x;
         $person->card_y =$card_y;
         $person->card_width =$card_width;
