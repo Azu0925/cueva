@@ -14,7 +14,6 @@
     //入力値の受け取り
     $team_name = $_POST['team_name'];
     $team_description = $_POST['team_description'];
-    $team_host = $_POST['team_host'];
     
     //table指定
     $user_table = 'user';
@@ -24,15 +23,12 @@
     //tokenの取得
     $token = $_POST['token'];
 
-    //user_idの取得
-    $user_id = $_POST['user_id'];
-
     //登録されているユーザー情報取得
     $user_list = ORM::for_table($user_table)->where('token', $token)->find_one();
     
     $list = [];
     foreach(ORM::for_table($user_table)->find_result_set() as $user_list){
-        $list[] = ($user_list->as_array('token'));
+        $list[] = ($user_list->as_array('id','user_name','token'));
     }
     // var_dump($list);
     
@@ -47,6 +43,10 @@
         echo json_encode($err);
         exit;
 }
+    //user_idの取得
+    $user_id = $list['id'];
+    //user_nameの取得
+    $user_name = $list['user_name'];
 
     //現在の日時の取得
     $new_team_create = date('Y-m-d H:i:s');
@@ -57,7 +57,7 @@
     $new_team->team_name = $team_name;
     $new_team->team_description = $team_description;
     $new_team->team_create = $new_team_create;
-    $new_team->team_host = $team_host;
+    $new_team->team_host = $user_name;
     $new_team->save();
 
 
