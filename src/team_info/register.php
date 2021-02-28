@@ -4,6 +4,9 @@
     require_once '../../vendor/j4mie/idiorm/idiorm.php';
     require '../../vendor/autoload.php';
 
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: X-Requested-With, Origin, X-Csrftoken, Content-Type, Accept");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, HEAD");
     
     ORM::configure('mysql:host='.Env::get("HOST").';port='.Env::get("PORT").';dbname='.Env::get("DB_NAME"));
     ORM::configure('username', Env::get('USER_ID'));
@@ -24,13 +27,13 @@
     $token = $_POST['token'];
 
     //登録されているユーザー情報取得
-    $user_list = ORM::for_table($user_table)->where('token', $token)->find_one();
+    $user_list = ORM::for_table($user_table)->where('token', $token)->find_one()->as_array();
     
     $list = [];
     foreach(ORM::for_table($user_table)->find_result_set() as $user_list){
         $list[] = ($user_list->as_array('id','user_name','token'));
     }
-    // var_dump($list);
+    //var_dump($user_list);
     
     //tokenの照合
     if($token !== $user_list['token']){
@@ -44,9 +47,9 @@
         exit;
 }
     //user_idの取得
-    $user_id = $list['id'];
+    $user_id = $user_list['id'];
     //user_nameの取得
-    $user_name = $list['user_name'];
+    $user_name = $user_list['user_name'];
 
     //現在の日時の取得
     $new_team_create = date('Y-m-d H:i:s');
@@ -97,7 +100,9 @@
 
     //jsonでチームidの返却
     $response = array(
-        'team_id' => $team_id,
+        "result" => array(
+            'team_id' => $team_id
+        )
     );
     echo json_encode($response);
 ?>
