@@ -1,4 +1,7 @@
     <?php
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: X-Requested-With, Origin, X-Csrftoken, Content-Type, Accept");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, HEAD");
     //これをsrc直下にコピーしてファイル名の「.sample」部分を削除して動かしてちょ
 
     use Cueva\Classes\{Env, Func};
@@ -14,9 +17,9 @@
     
 
     //tokenとcard_idの検索
-    if (isset($_POST['token']) && isset($_POST['card_id'])) {
-      $token = $_POST['token'];  //tokenを取得し変数へ格納
-      $card_id = $_POST['card_id']; //card_idを取得し変数へ格納
+    //if (isset($_POST['token']) && isset($_POST['card_id'])) {
+      $token = "1234";//$_POST['token'];  //tokenを取得し変数へ格納
+      $card_id = "1";//$_POST['card_id']; //card_idを取得し変数へ格納
       $select = ORM::for_table('v_card_info')
         ->where(array(
           'token' => $token,
@@ -60,7 +63,7 @@
         echo json_encode($error);
         exit;
       }
-    }
+    //}
     //tokenとcard_idが取得できなかった場合
     $error = array(
       "error" => array(
