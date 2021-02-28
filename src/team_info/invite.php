@@ -51,6 +51,7 @@
     $new_member->member_invitation = 0;
     $new_member->save();
 
+    
     if(!$new_member->save()){
         //エラー内容
         //jsonでエラーメッセージの返却
