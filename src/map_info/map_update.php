@@ -49,7 +49,7 @@
         array( 
         array('code' => '401','message' => 'Unauthorized')),
     );
-        echo json_encode($err);
+        echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
 }
     //user_idの取得
