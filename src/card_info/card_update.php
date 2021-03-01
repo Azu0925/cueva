@@ -14,8 +14,8 @@
     $table = 'v_map_delete'; //テーブルの名前
 
 
-    $card_name = $_POST['card_name']; //card_name 作成するカードの名前
-    if ((isset($card_name) == false) && ($card_name == NULL)) { //バリデーションチェック
+     
+    if (!isset($_POST['card_name'])) { //バリデーションチェック
       $error = array(
         "error" => array(
           array(
@@ -27,10 +27,9 @@
       echo json_encode($error);
       exit;
     }
-    $card_description = $_POST['card_description']; //card_description 作成するカードの詳細
 
-    $card_x = $_POST['card_x']; //card_x カードのx座標
-    if ((is_int($card_x) == false) && ($card_x == NULL)) {  //バリデーションチェック
+    
+    if (!is_int($_POST['card_x'])) {  //バリデーションチェック
       $error = array(
         "error" => array(
           array(
@@ -42,8 +41,9 @@
       echo json_encode($error);
       exit;
     }
-    $card_y = $_POST['card_y']; //card_y カードのy座標
-    if ((is_int($card_y) == false) && ($card_y == NULL)) {  //バリデーションチェック
+
+    
+    if (!is_int($_POST['card_y'])) {  //バリデーションチェック
       $error = array(
         "error" => array(
           array(
@@ -55,8 +55,8 @@
       echo json_encode($error);
       exit;
     }
-    $card_width = $_POST['card_width']; //card_width カードの横幅
-    if ((is_int($card_width) == false) && ($card_width == NULL)) {  //バリデーションチェック
+  
+    if (!is_int($_POST['card_width'])) {  //バリデーションチェック
       $error = array(
         "error" => array(
           array(
@@ -68,8 +68,9 @@
       echo json_encode($error);
       exit;
     }
-    $card_height = $_POST['card_height']; //card_height カードの縦の長さ
-    if ((is_int($card_height) == false) && ($card_height == NULL)) {  //バリデーションチェック
+
+    
+    if (!is_int($_POST['card_height'])) {  //バリデーションチェック
       $error = array(
         "error" => array(
           array(
@@ -84,6 +85,14 @@
 
     //tokenとmap_idの検索
     if (isset($_POST['token']) && isset($_POST['map_id'])) {
+
+      $card_name = $_POST['card_name'];//card_name 作成するカードの名前
+      $card_description = $_POST['card_description']; //card_description 作成するカードの詳細
+      $card_x = $_POST['card_x']; //card_x カードのx座標
+      $card_y = $_POST['card_y']; //card_y カードのy座標
+      $card_width = $_POST['card_width']; //card_width カードの横幅
+      $card_height = $_POST['card_height']; //card_height カードの縦の長さ
+
       $token = $_POST['token'];  //tokenを取得し変数へ格納
       $map_id = $_POST['map_id']; //map_idを取得し変数へ格納
       $select = ORM::for_table('v_map_delete')
