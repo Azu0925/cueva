@@ -17,20 +17,21 @@
     
 
     //tokenとcard_idの検索
-    if (isset($_POST['token']) && isset($_POST['card_id'])) {
+    if (isset($_POST['token']) && isset($_POST['map_id']) && isset($_POST['team_id'])) {
       $token = $_POST['token'];  //tokenを取得し変数へ格納
-      $card_id = $_POST['card_id']; //card_idを取得し変数へ格納
-      $select = ORM::for_table('v_card_info')
+      $map_id = $_POST['map_id']; //map_idを取得し変数へ格納
+      $team_id = $_POST['team_id']; //map_idを取得し変数へ格納
+      $select = ORM::for_table('v_map_delete')
         ->where(array(
           'token' => $token,
-          'c_id' => $card_id
+          'm_id' => $map_id,
+          't_id' => $team_id
         ))
         ->find_one();
-      if ($select != false) { //card表示ユーザー名の取得
-        $map_id = $select->m_id;//map_idの取得
-        $information = ORM::for_table("card")->where(array(
-          'id' => $card_id,
-          'map_id' => $map_id
+      if ($select != false) { //map表示
+        $information = ORM::for_table("map")->where(array(
+          'id' => $map_id,
+          'team_id' => $team_id
         ))
         ->find_array(); 
         if ($information != false) { //結果
@@ -49,7 +50,7 @@
           echo json_encode($error);
           exit;
         }
-      } else { //tokenとcard_idに関連性がなかった場合(チームメンバー以外の削除リクエスト)
+      } else { //token・map_id・team_idに関連性がなかった場合(チームメンバー以外の削除リクエスト)
         $error = array(
           "error" => array(
             array(
