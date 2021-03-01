@@ -33,7 +33,7 @@
     
     $list = [];
     foreach(ORM::for_table($user_table)->find_result_set() as $user_list) {
-        $list = ($user_list->as_array('token'));
+        $list = ($user_list->as_array('id','token'));
     }
     // var_dump($list);
     
@@ -75,7 +75,7 @@
     //map_idの取得
     $map_id = $_POST['id'];
 
-    //mapテーブルかｒ情報取得
+    //mapテーブルから情報取得
     $map_list = ORM::for_table($map_table)->where('id', $map_id)->find_many();
     
     $list = [];
