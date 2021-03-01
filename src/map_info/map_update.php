@@ -20,7 +20,7 @@
     $team_table = 'team';
     $map_table = 'map';
 
-    if(isset($_POST['token'])){
+    if(isset($_POST['token'] , $_POST['map_name'] , $_POST['map_description'] , $_POST['parameter_top'] , $_POST['parameter_under'] , $_POST['parameter_left'] , $_POST['parameter_right'])){
         //入力値の受け取り
         //バリデーションチェック
         $map_name = $_POST['map_name'];
