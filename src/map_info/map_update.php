@@ -20,27 +20,33 @@
     $team_table = 'team';
     $map_table = 'map';
 
-    if(isset($_POST['token'] , $_POST['map_name'] , $_POST['map_description'] , $_POST['parameter_top'] , $_POST['parameter_under'] , $_POST['parameter_left'] , $_POST['parameter_right'])){
+    if(isset($_POST['token'] , $_POST['map_name'] , $_POST['parameter_top'] , $_POST['parameter_under'] , $_POST['parameter_left'] , $_POST['parameter_right'])){
+
         //入力値の受け取り
-        //バリデーションチェック
         $map_name = $_POST['map_name'];
-        if ((!isset($map_name) == false) && ($map_name == NULL)) { 
-            $err = array(
-              "error" => array(
-                array(
-                  "code" => "400",
-                  "message" => "Bad Request"
-                )
-              )
-            );
-            echo json_encode($err, JSON_UNESCAPED_UNICODE);
-            exit;
+        $map_description = $_POST['map_description'];
+        $parameter_top = $_POST['parameter_top'];
+        $parameter_under = $_POST['parameter_under'];
+        $parameter_left = $_POST['parameter_left'];
+        $parameter_right = $_POST['parameter_right'];
+
+        //バリデーションチェック
+        if(isset($map_name)){
+            if($map_name == false && $map_name == NULL){
+                $err = array(
+                    "error" => array(
+                      array(
+                        "code" => "400",
+                        "message" => "Bad Request"
+                      )
+                    )
+                  );
+                  echo json_encode($err, JSON_UNESCAPED_UNICODE);
+                  exit;
+            }
         }
 
-        $map_description = $_POST['map_description'];
-        $max = 30;
-        $min = 1;
-        if($max < $map_description || $map_description < $min){
+        if (!preg_match("/^.{0,100}$/",$map_description)) {
             $err = array(
                 "error" => array(
                   array(
@@ -53,63 +59,67 @@
             exit;
         }
 
-        $parameter_top = $_POST['parameter_top'];
-        if ((!isset($parameter_top) == false) && ($parameter_top == NULL)) { 
-            $err = array(
-              "error" => array(
-                array(
-                  "code" => "400",
-                  "message" => "Bad Request"
-                )
-              )
-            );
-            echo json_encode($err, JSON_UNESCAPED_UNICODE);
-            exit;
+        if(isset($parameter_top)){
+            if($parameter_top == false && $parameter_top == NULL){
+                $err = array(
+                    "error" => array(
+                      array(
+                        "code" => "400",
+                        "message" => "Bad Request"
+                      )
+                    )
+                  );
+                  echo json_encode($err, JSON_UNESCAPED_UNICODE);
+                  exit;
+            }
         }
 
-        $parameter_under = $_POST['parameter_under'];
-        if ((!isset($parameter_under) == false) && ($parameter_under == NULL)) { 
-            $err = array(
-              "error" => array(
-                array(
-                  "code" => "400",
-                  "message" => "Bad Request"
-                )
-              )
-            );
-            echo json_encode($err, JSON_UNESCAPED_UNICODE);
-            exit;
+        if(isset($parameter_under)){
+            if($parameter_under == false && $parameter_under == NULL){
+                $err = array(
+                    "error" => array(
+                      array(
+                        "code" => "400",
+                        "message" => "Bad Request"
+                      )
+                    )
+                  );
+                  echo json_encode($err, JSON_UNESCAPED_UNICODE);
+                  exit;
+            }
         }
 
-        $parameter_left = $_POST['parameter_left'];
-        if ((!isset($parameter_left) == false) && ($parameter_left == NULL)) { 
-            $err = array(
-              "error" => array(
-                array(
-                  "code" => "400",
-                  "message" => "Bad Request"
-                )
-              )
-            );
-            echo json_encode($err, JSON_UNESCAPED_UNICODE);
-            exit;
+        if(isset($parameter_left)){
+            if($parameter_left == false && $parameter_left == NULL){
+                $err = array(
+                    "error" => array(
+                      array(
+                        "code" => "400",
+                        "message" => "Bad Request"
+                      )
+                    )
+                  );
+                  echo json_encode($err, JSON_UNESCAPED_UNICODE);
+                  exit;
+            }
         }
 
-        $parameter_right = $_POST['parameter_right'];
-        if ((!isset($parameter_right) == false) && ($parameter_right == NULL)) { 
-            $err = array(
-              "error" => array(
-                array(
-                  "code" => "400",
-                  "message" => "Bad Request"
-                )
-              )
-            );
-            echo json_encode($err, JSON_UNESCAPED_UNICODE);
-            exit;
+        if(isset($parameter_right)){
+            if($parameter_right == false && $parameter_right == NULL){
+                $err = array(
+                    "error" => array(
+                      array(
+                        "code" => "400",
+                        "message" => "Bad Request"
+                      )
+                    )
+                  );
+                  echo json_encode($err, JSON_UNESCAPED_UNICODE);
+                  exit;
+            }
         }
 
-        //tokenの取得
+        //tokenの受け取り
         $token = $_POST['token'];
 
         //登録されているユーザー情報取得
@@ -213,7 +223,7 @@
 
         //map編集
         $map_update = ORM::for_table($map_table)->where('id',$map_id)->find_result_set()
-            ->set('map_name',$map_name ,'map_description',$map_description , 'map_create',$map_create , 'map_host',$map_host , 'parameter_top',$parameter_top , 'parameter_under',$parameter_under , 'parameter_left',$parameter_left ,'parameter_right',$parameter_right)
+            ->set('map_name',$map_name , 'map_description',$map_description , 'map_create',$map_create , 'map_host',$map_host , 'parameter_top',$parameter_top , 'parameter_under',$parameter_under , 'parameter_left',$parameter_left , 'parameter_right',$parameter_right)
             ->save();
         
         //map編集時エラーメッセージ
