@@ -22,8 +22,9 @@
 
     if(isset($_POST['token'])){
         //入力値の受け取り
+        //バリデーションチェック
         $map_name = $_POST['map_name'];
-        if ((isset($map_name) == false) && ($map_name == NULL)) { //バリデーションチェック
+        if ((isset($map_name) == false) && ($map_name == NULL)) { 
             $err = array(
               "error" => array(
                 array(
@@ -39,7 +40,7 @@
         $map_description = $_POST['map_description'];
 
         $parameter_top = $_POST['parameter_top'];
-        if ((isset($parameter_top) == false) && ($parameter_top == NULL)) { //バリデーションチェック
+        if ((isset($parameter_top) == false) && ($parameter_top == NULL)) { 
             $err = array(
               "error" => array(
                 array(
@@ -53,7 +54,7 @@
         }
 
         $parameter_under = $_POST['parameter_under'];
-        if ((isset($parameter_under) == false) && ($parameter_under == NULL)) { //バリデーションチェック
+        if ((isset($parameter_under) == false) && ($parameter_under == NULL)) { 
             $err = array(
               "error" => array(
                 array(
@@ -67,7 +68,7 @@
         }
 
         $parameter_left = $_POST['parameter_left'];
-        if ((isset($parameter_left) == false) && ($parameter_left == NULL)) { //バリデーションチェック
+        if ((isset($parameter_left) == false) && ($parameter_left == NULL)) { 
             $err = array(
               "error" => array(
                 array(
@@ -81,7 +82,7 @@
         }
 
         $parameter_right = $_POST['parameter_right'];
-        if ((isset($parameter_right) == false) && ($parameter_right == NULL)) { //バリデーションチェック
+        if ((isset($parameter_right) == false) && ($parameter_right == NULL)) { 
             $err = array(
               "error" => array(
                 array(
