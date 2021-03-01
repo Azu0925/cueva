@@ -12,11 +12,17 @@
     ORM::configure('password', Env::get("PASSWORD"));
     ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 
-//送られてきたトークンの値から本人情報を取得
-$person = ORM::for_table('user')->where('token', $_POST['token'])->find_many();
-//取ってきたユーザーIDから所属チームを取得
-$team = ORM::for_table('member')->where('user_id', $_POST['user_id'])->find_many();
-//エラー処理
+    //送られてきたトークンの値から本人情報を取得
+    $person = ORM::for_table('user')->where('token', $_POST['token'])->find_one()->as_array();
+    //取ってきたユーザーIDから所属チームを取得
+    $member = ORM::for_table('member')->where('user_id', $person['id'])->find_many();
+
+    $team_list = [];
+    foreach($member as $row){
+        $team_list[] = ORM::for_table('team')->where('id', $row['team_id'])->select_many('id', 'team_name')->find_one()->as_array();
+
+    }
+    //エラー処理
     //認証失敗
     if((empty($_POST['token']))){
         $error = array(
@@ -43,7 +49,7 @@ $team = ORM::for_table('member')->where('user_id', $_POST['user_id'])->find_many
         echo json_encode($error);
         exit;
     }
-    if((empty($team))){
+    /*if((empty($team))){
         $error = array(
             "error" => array(
                 array(
@@ -54,16 +60,14 @@ $team = ORM::for_table('member')->where('user_id', $_POST['user_id'])->find_many
         );
         echo json_encode($error);
         exit;
-    }
+    }*/
 //jsonの返却
 $response = array(
-    "result" => [
-    "user_name" => $person['user_name'],
-    "user_address" =>$person['user_address'],  
-    "team_info" =>[
-        "team_id" =>$team['team_id'],$team['team_name']
-    ]  
-    ]
+    "result" => array(
+        "user_name" => $person['user_name'],
+        "user_address" =>$person['user_address'],  
+        "team_info" => $team_list
+    )
 );
  
 echo json_encode($response, JSON_UNESCAPED_UNICODE);
