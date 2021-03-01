@@ -26,7 +26,7 @@
             )
           )
         );
-        echo json_encode($error);
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
         exit;
       }
       $map_description = $_POST['map_description']; //card_description 作成するカードの詳細
@@ -58,7 +58,7 @@
                 )
               )
             );
-            echo json_encode($result);
+            echo json_encode($result, JSON_UNESCAPED_UNICODE);
             exit;
           } else { //Dleteエラー処理
             $error = array(
@@ -69,7 +69,7 @@
                 )
               )
             );
-            echo json_encode($error);
+            echo json_encode($error, JSON_UNESCAPED_UNICODE);
             exit;
           }
         } else { //tokenとmap_idに関連性がなかった場合(チームメンバー以外の削除リクエスト)
@@ -81,7 +81,7 @@
               )
             )
           );
-          echo json_encode($error);
+          echo json_encode($error, JSON_UNESCAPED_UNICODE);
           exit;
         }
       }
@@ -96,4 +96,4 @@
       )
     );
 
-    echo json_encode($error);
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
