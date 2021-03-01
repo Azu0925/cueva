@@ -17,9 +17,9 @@
     
 
     //tokenとcard_idの検索
-    //if (isset($_POST['token']) && isset($_POST['card_id'])) {
-      $token = "1234";//$_POST['token'];  //tokenを取得し変数へ格納
-      $card_id = "1";//$_POST['card_id']; //card_idを取得し変数へ格納
+    if (isset($_POST['token']) && isset($_POST['card_id'])) {
+      $token = $_POST['token'];  //tokenを取得し変数へ格納
+      $card_id = $_POST['card_id']; //card_idを取得し変数へ格納
       $select = ORM::for_table('v_card_info')
         ->where(array(
           'token' => $token,
@@ -63,7 +63,7 @@
         echo json_encode($error, JSON_UNESCAPED_UNICODE);
         exit;
       }
-    //}
+    }
     //tokenとcard_idが取得できなかった場合
     $error = array(
       "error" => array(
