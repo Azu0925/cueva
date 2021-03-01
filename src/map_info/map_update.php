@@ -23,6 +23,7 @@
     //table指定
     $user_table = 'user';
     $member_table = 'member';
+    $team_table = 'team';
     $map_table = 'map';
 
     //tokenの取得
@@ -56,12 +57,36 @@
     
     $list = [];
     foreach(ORM::for_table($member_table)->find_result_set() as $member_list) {
-        $list = ($member_list->as_array('user_id'));
+        $list = ($member_list->as_array('user_id','team_id'));
     }
     // var_dump($list);
     
     //user_idの照合
     if($user_id !== $member_list['user_id']){
+        //エラー内容
+        //jsonでエラーメッセージの返却
+        $err = array('error' =>
+        array( 
+        array('code' => '403','message' => 'Forbidden')),
+    );
+        echo json_encode($err);
+        exit;
+}
+
+    //team_idの取得
+    $team_id = $list['team_id'];
+
+    //team_idの情報取得
+    $team_list = ORM::for_table($team_table)->where('id', $team_id)->find_one();
+    
+    $list = [];
+    foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
+        $list = ($team_list->as_array('team_id'));
+    }
+    // var_dump($list);
+
+    //team_idの照合
+    if($team_id !== $team_list['team_id']){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
@@ -80,9 +105,21 @@
     
     $list = [];
     foreach(ORM::for_table($map_table)->find_result_set() as $map_list) {
-        $list[] = ($map_list->as_array('id'));
+        $list[] = ($map_list->as_array('id','team_id'));
     }
     // // var_dump($list);
+
+    //team_idの照合
+    if($team_id !== $map_list['team_id']){
+        //エラー内容
+        //jsonでエラーメッセージの返却
+        $err = array('error' =>
+        array( 
+        array('code' => '403','message' => 'Forbidden')),
+    );
+        echo json_encode($err);
+        exit;
+}
 
     //現在の日時の取得
     $map_create = date('Y-m-d H:i:s');
