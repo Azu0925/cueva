@@ -83,7 +83,7 @@ if(isset($_POST['token']) && is_int($_POST['card_x']) && is_int($_POST['card_x']
             "result" => array(
             array(
                 "result" => true,
-                "person" -> $perspon,
+                "person" -> $person,
             )
             )
         );
