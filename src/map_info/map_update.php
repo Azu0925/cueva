@@ -24,7 +24,7 @@
         //入力値の受け取り
         //バリデーションチェック
         $map_name = $_POST['map_name'];
-        if ((isset($map_name) == false) && ($map_name == NULL)) { 
+        if ((!isset($map_name) == false) && ($map_name == NULL)) { 
             $err = array(
               "error" => array(
                 array(
@@ -38,9 +38,23 @@
         }
 
         $map_description = $_POST['map_description'];
+        $max = 30;
+        $min = 1;
+        if($max < $map_description || $map_description < $min){
+            $err = array(
+                "error" => array(
+                  array(
+                    "code" => "400",
+                    "message" => "Bad Request"
+                )
+              )
+            );
+            echo json_encode($err, JSON_UNESCAPED_UNICODE);
+            exit;
+        }
 
         $parameter_top = $_POST['parameter_top'];
-        if ((isset($parameter_top) == false) && ($parameter_top == NULL)) { 
+        if ((!isset($parameter_top) == false) && ($parameter_top == NULL)) { 
             $err = array(
               "error" => array(
                 array(
@@ -54,7 +68,7 @@
         }
 
         $parameter_under = $_POST['parameter_under'];
-        if ((isset($parameter_under) == false) && ($parameter_under == NULL)) { 
+        if ((!isset($parameter_under) == false) && ($parameter_under == NULL)) { 
             $err = array(
               "error" => array(
                 array(
@@ -68,7 +82,7 @@
         }
 
         $parameter_left = $_POST['parameter_left'];
-        if ((isset($parameter_left) == false) && ($parameter_left == NULL)) { 
+        if ((!isset($parameter_left) == false) && ($parameter_left == NULL)) { 
             $err = array(
               "error" => array(
                 array(
@@ -82,7 +96,7 @@
         }
 
         $parameter_right = $_POST['parameter_right'];
-        if ((isset($parameter_right) == false) && ($parameter_right == NULL)) { 
+        if ((!isset($parameter_right) == false) && ($parameter_right == NULL)) { 
             $err = array(
               "error" => array(
                 array(
