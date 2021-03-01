@@ -29,6 +29,31 @@
                 case "subscribe":
                     $this->subscriptions[$conn->resourceId] = $data->channel;
                     break;
+                case "invite":
+                    if (isset($this->subscriptions[$conn->resourceId])) {
+                        $target = $this->subscriptions[$conn->resourceId];
+                        foreach ($this->subscriptions as $id=>$channel) {
+                            if ($channel == $target) {
+                                // インスタンス生成
+                                $env = new Env;
+                                // DB接続
+                                $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
+                                mysqli_set_charset($link, 'utf8');
+
+                                // 返却するリスト生成
+                                $query = mysqli_query($link, "SELECT * FROM member WHERE member_invitetion = ".$data->message);
+                                $member_list = [];
+                                while($row = mysqli_fetch_assoc($query)){
+                                    $member_list[] = $row;
+                                }
+                                // var_dump($member_list);
+
+                                // JSON形式で返却
+                                $json_member_list = json_encode($member_list);
+                                $this->users[$id]->send($json_member_list);
+                            }                       
+                        }
+                    }
                 case "maps":
                     if (isset($this->subscriptions[$conn->resourceId])) {
                         $target = $this->subscriptions[$conn->resourceId];
@@ -40,7 +65,7 @@
                                 $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
                                 mysqli_set_charset($link, 'utf8');
 
-                                // 返却するリスト生成 ".$data->message
+                                // 返却するリスト生成
                                 $query = mysqli_query($link, "SELECT * FROM map WHERE team_id = ".$data->message);
                                 $maps_list = [];
                                 while($row = mysqli_fetch_assoc($query)){
