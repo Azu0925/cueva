@@ -1,6 +1,9 @@
 <?php
 
     use Cueva\Classes\ {Env, Func};
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: X-Requested-With, Origin, X-Csrftoken, Content-Type, Accept");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, HEAD");
     require_once '../../vendor/j4mie/idiorm/idiorm.php';
     require '../../vendor/autoload.php';
 
@@ -69,7 +72,7 @@
         array( 
         array('code' => '403','message' => 'Forbidden')),
     );
-        echo json_encode($err);
+        echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
 }
 
@@ -93,7 +96,7 @@
         array( 
         array('code' => '403','message' => 'Forbidden')),
     );
-        echo json_encode($err);
+        echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
 }
 
@@ -117,7 +120,7 @@
         array( 
         array('code' => '403','message' => 'Forbidden')),
     );
-        echo json_encode($err);
+        echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
 }
 
@@ -139,7 +142,7 @@
         array( 
         array('code' => '452','message' => 'Insert error for database')),
     );
-        echo json_encode($err);
+        echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
 }
     
@@ -147,6 +150,6 @@
     $response = array(
         'result' => true,
     );
-    echo json_encode($response);
+    echo json_encode($response, JSON_UNESCAPED_UNICODE);
     
 ?>
