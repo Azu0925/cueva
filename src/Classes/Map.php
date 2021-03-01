@@ -40,6 +40,20 @@
                                 $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
                                 mysqli_set_charset($link, 'utf8');
 
+                                // $dataが数値型かどうか
+                                if(!is_numeric($data)){
+                                    $error = array(
+                                        "error" => array(
+                                            array(
+                                                "code" => "451",
+                                                "message" => "Validation error for 'message'"
+                                            )
+                                        )
+                                    );
+                                    echo json_encode($error);
+                                    exit;
+                                }
+
                                 // 返却するリスト生成
                                 $query = mysqli_query($link, "SELECT * FROM member WHERE member_invitetion = ".$data->message);
                                 $member_list = [];
@@ -49,7 +63,7 @@
                                 // var_dump($member_list);
 
                                 // JSON形式で返却
-                                $json_member_list = json_encode($member_list);
+                                $json_member_list = json_encode($member_list, JSON_UNESCAPED_UNICODE);
                                 $this->users[$id]->send($json_member_list);
                             }                       
                         }
@@ -65,6 +79,20 @@
                                 $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
                                 mysqli_set_charset($link, 'utf8');
 
+                                // $dataが数値型かどうか
+                                if(!is_numeric($data)){
+                                    $error = array(
+                                        "error" => array(
+                                            array(
+                                                "code" => "451",
+                                                "message" => "Validation error for 'message'"
+                                            )
+                                        )
+                                    );
+                                    echo json_encode($error, JSON_UNESCAPED_UNICODE);
+                                    exit;
+                                }
+
                                 // 返却するリスト生成
                                 $query = mysqli_query($link, "SELECT * FROM map WHERE team_id = ".$data->message);
                                 $maps_list = [];
@@ -74,7 +102,7 @@
                                 // var_dump($maps_list);
 
                                 // JSON形式で返却
-                                $json_maps_list = json_encode($maps_list);
+                                $json_maps_list = json_encode($maps_list, JSON_UNESCAPED_UNICODE);
                                 $this->users[$id]->send($json_maps_list);
                             }                       
                         }
@@ -90,7 +118,21 @@
                                 $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
                                 mysqli_set_charset($link, 'utf8');
 
-                                // 返却するリスト生成
+                                // $dataが数値型かどうか
+                                if(!is_numeric($data)){
+                                    $error = array(
+                                        "error" => array(
+                                            array(
+                                                "code" => "451",
+                                                "message" => "Validation error for 'message'"
+                                            )
+                                        )
+                                    );
+                                    echo json_encode($error, JSON_UNESCAPED_UNICODE);
+                                    exit;
+                                }
+
+                                // 返却するリスト生成 ".$data->message
                                 $query = mysqli_query($link, "SELECT * FROM map WHERE id = ".$data->message);
                                 $map_list = [];
                                 while($row = mysqli_fetch_assoc($query)){
@@ -99,7 +141,7 @@
                                 // var_dump($map_list);
 
                                 // JSON形式で返却
-                                $json_map_list = json_encode($map_list);
+                                $json_map_list = json_encode($map_list, JSON_UNESCAPED_UNICODE);
                                 $this->users[$id]->send($json_map_list);
                             }                       
                         }
@@ -115,6 +157,20 @@
                                 $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
                                 mysqli_set_charset($link, 'utf8');
 
+                                // $dataが数値型かどうか
+                                if(!is_numeric($data)){
+                                    $error = array(
+                                        "error" => array(
+                                            array(
+                                                "code" => "451",
+                                                "message" => "Validation error for 'message'"
+                                            )
+                                        )
+                                    );
+                                    echo json_encode($error, JSON_UNESCAPED_UNICODE);
+                                    exit;
+                                }
+
                                 // 返却するリスト生成
                                 $query = mysqli_query($link, "SELECT * FROM card WHERE map_id = ".$data->message);
                                 $cards_list = [];
@@ -124,7 +180,7 @@
                                 // var_dump($cards_list);
 
                                 // JSON形式で返却
-                                $json_cards_list = json_encode($cards_list);
+                                $json_cards_list = json_encode($cards_list, JSON_UNESCAPED_UNICODE);
                                 $this->users[$id]->send($json_cards_list);
                             }                   
                         }
@@ -140,6 +196,20 @@
                                 $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
                                 mysqli_set_charset($link, 'utf8');
 
+                                // $dataが数値型かどうか
+                                if(!is_numeric($data)){
+                                    $error = array(
+                                        "error" => array(
+                                            array(
+                                                "code" => "451",
+                                                "message" => "Validation error for 'message'"
+                                            )
+                                        )
+                                    );
+                                    echo json_encode($error, JSON_UNESCAPED_UNICODE);
+                                    exit;
+                                }
+
                                 // 返却するリスト生成
                                 $query = mysqli_query($link, "SELECT * FROM card WHERE id = ".$data->message);
                                 $card_list = [];
@@ -149,7 +219,7 @@
                                 // var_dump($card_list);
 
                                 // JSON形式で返却
-                                $json_card_list = json_encode($card_list);
+                                $json_card_list = json_encode($card_list, JSON_UNESCAPED_UNICODE);
                                 $this->users[$id]->send($json_card_list);
                             }                   
                         }
