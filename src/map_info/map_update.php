@@ -31,7 +31,7 @@
 
 
     //tokenのバリデーションチェック
-    if(isset($token)){
+    if(!isset($token)){
         $err = array(
             "error" => array(
                 array(
@@ -45,7 +45,7 @@
     }
 
     //map_nameのバリデーションチェック
-    if(isset($map_name)){
+    if(!isset($map_name)){
         $err = array(
             "error" => array(
                 array(
@@ -73,7 +73,7 @@
     }
 
     //parameter_topのバリデーションチェック
-    if(isset($parameter_top)){
+    if(!isset($parameter_top)){
         $err = array(
             "error" => array(
                 array(
@@ -87,7 +87,7 @@
     }
 
     //parameter_underのバリデーションチェック
-    if(isset($parameter_under)){
+    if(!isset($parameter_under)){
         $err = array(
             "error" => array(
                 array(
@@ -101,7 +101,7 @@
     }
 
     //parameter_leftのバリデーションチェック
-    if(isset($parameter_left)){
+    if(!isset($parameter_left)){
         $err = array(
             "error" => array(
                 array(
@@ -115,7 +115,7 @@
     }
 
     //parameter_rightのバリデーションチェック
-    if(isset($parameter_right)){
+    if(!isset($parameter_right)){
         $err = array(
             "error" => array(
                 array(
