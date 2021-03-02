@@ -216,12 +216,13 @@
     $create_card = ORM::for_table($card_table)->create();
     $create_card->card_name = $card_name;
     $create_card->card_discription = $card_discription;
-    $create_card->update_date =$update_date;
-    $create_card->update_user =$update_user;
-    $create_card->card_x =$card_x;
-    $create_card->card_y =$card_y;
-    $create_card->card_width =$card_width;
-    $create_card->card_height =$card_height;
+    $create_card->update_date = $update_date;
+    $create_card->update_user = $update_user;
+    $create_card->card_x = $card_x;
+    $create_card->card_y = $card_y;
+    $create_card->card_width = $card_width;
+    $create_card->card_height = $card_height;
+    $create_card->mp_id = $map_id;
     $create_card->save();
 
     //INSERT出来なかった時の処理
