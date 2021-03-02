@@ -59,7 +59,7 @@
       $error = array(
         "error" => array(
           array(
-            "code" => "40",
+            "code" => "400",
             "message" => "Bad Request"
           )
         )
