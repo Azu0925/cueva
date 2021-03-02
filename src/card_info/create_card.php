@@ -29,6 +29,21 @@
     $card_width	= $_POST['card_width'];
     $card_height = $_POST['card_height'];
     
+
+    //tokenのバリデーションチェック
+    if(!isset($token)){
+        $err = array(
+            "error" => array(
+                array(
+                "code" => "400",
+                "message" => "Bad Request"
+                )
+            )
+        );
+        echo json_encode($err, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+    
     //card_nameのバリデーションチェック
     if (!preg_match("/^.{1,30}$/",$card_name)) {
         $err = array(
