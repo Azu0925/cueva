@@ -222,7 +222,7 @@
     $create_card->card_y = $card_y;
     $create_card->card_width = $card_width;
     $create_card->card_height = $card_height;
-    $create_card->mp_id = $map_id;
+    $create_card->map_id = $map_id;
     $create_card->save();
 
     //INSERT出来なかった時の処理
