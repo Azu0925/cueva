@@ -195,7 +195,7 @@
     // var_dump($list);
 
     //map_idの照合
-    if($map_id !== $map_list['team_id']){
+    if($map_id !== $map_list['map_id']){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
