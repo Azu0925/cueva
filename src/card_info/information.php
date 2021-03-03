@@ -32,21 +32,34 @@
           'id' => $card_id,
           'map_id' => $map_id
         ))
-        ->find_array(); 
+        ->find_one(); 
         if ($information != false) { //結果
-          $result = $information;
-          echo json_encode($result);
+          $result = array(
+            "result" => array(
+              "card_id" => $information->id,
+              "card_name" => $information->card_name,
+              "card_description" => $information->card_description,
+              "update_time" => $information->update_date,
+              "update_user" => $information->update_user,
+              "card_x" => $information->card_x,
+              "card_y" => $information->card_y,
+              "card_width" => $information->card_width,
+              "card_height" => $information->card_height,
+              "map_id" => $information->map_id
+            )
+          );
+          echo json_encode($result, JSON_UNESCAPED_UNICODE);
           exit;
         } else { //information取得失敗
           $error = array(
             "error" => array(
               array(
                 "code" => "452",
-                "message" => "Delete error for database"
+                "message" => "Reference error for database"
               )
             )
           );
-          echo json_encode($error);
+          echo json_encode($error, JSON_UNESCAPED_UNICODE);
           exit;
         }
       } else { //tokenとcard_idに関連性がなかった場合(チームメンバー以外の削除リクエスト)
@@ -58,7 +71,7 @@
             )
           )
         );
-        echo json_encode($error);
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
         exit;
       }
     }
@@ -72,4 +85,4 @@
       )
     );
 
-    echo json_encode($error);
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
