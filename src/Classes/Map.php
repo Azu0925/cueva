@@ -142,7 +142,6 @@
                     }
                 }
             }elseif($data->command === "update_data"){
-                echo 'true';
                 if (isset($this->subscriptions[$conn->resourceId])) {
                     $target = $this->subscriptions[$conn->resourceId];
                     foreach ($this->subscriptions as $id=>$channel) {
@@ -153,7 +152,7 @@
                             $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
                             mysqli_set_charset($link, 'utf8');
                             // $dataが数値型かどうか
-                            if(!is_numeric($data)){
+                            if(!is_numeric($data->message)){
                                 $error = array(
                                     "error" => array(
                                         array(
