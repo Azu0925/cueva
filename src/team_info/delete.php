@@ -34,8 +34,7 @@ use Cueva\Classes\ {Env, Func};
         exit;
     }
     else{
-        $delete = ORM::for_table('team')->where_like('user_id',$_POST['token'])->find_one();
-        $delete->delete();
+        $team->delete();
         //jsonの返却
         $response = array(
             'result' =>true
