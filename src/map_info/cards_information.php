@@ -47,12 +47,12 @@
             )
           )
         );
-        echo json_encode($error);
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
         exit;
       }
       if ($data != false) { //cardsに値が入っていればtrue
         $result = $data;
-        echo json_encode($result);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
         exit;
       } else { //cards取得失敗
         $error = array(
@@ -63,7 +63,7 @@
             )
           )
         );
-        echo json_encode($error);
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
         exit;
       }
       //tokenとmap_idが取得できなかった場合
@@ -75,6 +75,6 @@
           )
         )
       );
+      echo json_encode($error, JSON_UNESCAPED_UNICODE);
+      exit;
     }
-
-    echo json_encode($error);
