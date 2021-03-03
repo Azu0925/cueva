@@ -15,58 +15,29 @@
     ORM::configure('password', Env::get("PASSWORD"));
     ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 
-
-    //tokenとmap_idの検索
-    if (isset($_POST['token']) && isset($_POST['map_id'])) {
-      $token = $_POST['token'];  //tokenを取得し変数へ格納 1234
-      $map_id = $_POST['map_id']; //map_idを取得し変数へ格納 2
-
-      $id = array();
-      //token・map_idが一致するcard_idを取得
-      $records = ORM::for_table('v_card_info')->where(array(
-        'token' => $token,
-        'm_id' => $map_id
-      ))
-        ->find_many();
-      if ($records != false) {//$recordsに値が入っていればtrue
-        foreach ($records as $record) {//該当するcard_idを配列に格納
-          $id[] = $record->c_id;
-        }
-        $data = array();
-        for ($i = 0; $i < count($id); $i++) {//配列に格納されたカードidを検索
-          $card = ORM::for_table('card')->where('id', $id[$i])
-            ->find_array();
-          $data[$i] = $card;
-        }
-      }else{//$records取得失敗
-        $error = array(
-          "error" => array(
-            array(
-              "code" => "452",
-              "message" => "Delete error for database"
-            )
-          )
-        );
-        echo json_encode($error);
-        exit;
-      }
-      if ($data != false) { //cardsに値が入っていればtrue
-        $result = $data;
+    if (isset($_POST['token'])) {//tokenが取得できた場合
+      $token =  $_POST['token'];
+      $select = ORM::for_table('v_user_invited')->where('token', $token)
+      ->find_array();
+      if ($select != false) {
+        $result = $select;
         echo json_encode($result);
         exit;
-      } else { //cards取得失敗
-        $error = array(
-          "error" => array(
-            array(
-              "code" => "452",
-              "message" => "Delete error for database"
-            )
+      }else{
+        //tokenが取得できなかった場合
+      $error = array(
+        "error" => array(
+          array(
+            "code" => "452",
+            "message" => "Delete error for database"
           )
-        );
-        echo json_encode($error);
-        exit;
+        )
+      );
+      echo json_encode($error, JSON_UNESCAPED_UNICODE);
+      exit;
       }
-      //tokenとmap_idが取得できなかった場合
+    }else{
+      //tokenが取得できなかった場合
       $error = array(
         "error" => array(
           array(
@@ -75,6 +46,5 @@
           )
         )
       );
+      echo json_encode($error, JSON_UNESCAPED_UNICODE);
     }
-
-    echo json_encode($error);
