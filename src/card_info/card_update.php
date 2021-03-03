@@ -29,7 +29,7 @@
       exit;
     }
 
-    if ($_POST['map_name'] == '') { //card_nameの値が入ってなければエラー
+    if ($_POST['card_name'] == '') { //card_nameの値が入ってなければエラー
       $error = array(
         "error" => array(
           array(
@@ -121,7 +121,7 @@
         ->find_many();
       if ($select != false) { //card更新ユーザー名の取得
         $record = ORM::for_table('user')->where('token', $token)->find_one();
-        $update_user = $recode->user_name;
+        $update_user = $record->user_name;
         $card_id = $_POST['card_id']; //card_id 更新するカードのid
         $update = ORM::for_table("card")->where('id', $card_id)->find_one(); //card更新処理１
         if ($update != false) { //card更新処理２(更新内容POST値を変数へ代入・更新内容の挿入)
