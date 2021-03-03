@@ -30,7 +30,7 @@
     // var_dump($list);
     
     //tokenの照合
-    if($token !== $user_list['token']){
+    if($user_list === false){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
