@@ -21,7 +21,7 @@
       $token = $_POST['token'];  //tokenを取得し変数へ格納 1234
       $map_id = $_POST['map_id']; //map_idを取得し変数へ格納 2
 
-      $data = array();
+      $id = array();
       //token・map_idが一致するcard_idを取得
       $records = ORM::for_table('v_card_info')->where(array(
         'token' => $token,
@@ -30,13 +30,13 @@
         ->find_many();
       if ($records != false) {//$recordsに値が入っていればtrue
         foreach ($records as $record) {//該当するcard_idを配列に格納
-          $data[] = $record->c_id;
+          $id[] = $record->c_id;
         }
-        
-        for ($i = 0; $i < count($data); $i++) {//配列に格納されたカードidを検索
-          $card = ORM::for_table('card')->where('id', $data[$i])
+        $data = array();
+        for ($i = 0; $i < count($id); $i++) {//配列に格納されたカードidを検索
+          $card = ORM::for_table('card')->where('id', $id[$i])
             ->find_array();
-          $cards[$i] = $card;
+          $data[$i] = $card;
         }
       }else{//$records取得失敗
         $error = array(
@@ -50,8 +50,8 @@
         echo json_encode($error);
         exit;
       }
-      if ($cards != false) { //cardsに値が入っていればtrue
-        $result = $cards;
+      if ($data != false) { //cardsに値が入っていればtrue
+        $result = $data;
         echo json_encode($result);
         exit;
       } else { //cards取得失敗
