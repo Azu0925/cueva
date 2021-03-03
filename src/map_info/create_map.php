@@ -23,7 +23,7 @@
 
     //tokenとteam_idの検索
     if (isset($_POST['token']) && isset($_POST['team_id'])) {
-      if (mb_strlen($map_description) > 100) {
+      if (mb_strlen($map_description) > 100 || $_POST['map_name'] == '') {//map_nameは空だとerr・map_descriptionは100文字以上だとerr
         $error = array(
           "error" => array(
             array(
@@ -74,9 +74,7 @@
           $result = array(
             "result" => array(
               array(
-                "result" => true,
-                $id
-
+                "map_id"=>$id
               )
             )
           );
@@ -87,7 +85,7 @@
             "error" => array(
               array(
                 "code" => "452",
-                "message" => "Delete error for database"
+                "message" => "Insert error for database"
               )
             )
           );
