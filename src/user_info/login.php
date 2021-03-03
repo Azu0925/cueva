@@ -26,9 +26,8 @@
 
     $user_list = [];
     foreach(ORM::for_table($table)->find_result_set() as $list) {
-        $user_list[] = ($list->as_array('id' , 'user_name' , 'user_address' , 'user_password' ,'token'));
+        $user_list = ($list->as_array('id' , 'user_name' , 'user_address' , 'user_password' ,'token'));
     }
-    // var_dump($user_list);
 
     //メールアドレスの照合
     if($user_address !== $list['user_address']){
@@ -44,12 +43,14 @@
 }
     
     //パスワードの取得
-    $hash = $user_list['user_password'];
+    echo $hash = $user_list['user_password'];
 
     //パスワードの照合
-    if(password_verify($user_password, $hash) !== $user_list['user_password']){
+    //var_dump(password_verify($user_password, $hash));
+    if(!password_verify($user_password, $hash)){
         //エラー内容
         //jsonでエラーメッセージの返却
+        echo 'a';
         $err = array(
             'error' =>
         array( 
