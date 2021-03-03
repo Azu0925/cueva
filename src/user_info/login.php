@@ -43,10 +43,9 @@
 }
     
     //パスワードの取得
-    echo $hash = $user_list['user_password'];
+    $hash = $user_list['user_password'];
 
     //パスワードの照合
-    //var_dump(password_verify($user_password, $hash));
     if(!password_verify($user_password, $hash)){
         //エラー内容
         //jsonでエラーメッセージの返却
