@@ -36,7 +36,7 @@
         for ($i = 0; $i < count($data); $i++) {//配列に格納されたカードidを検索
           $card = ORM::for_table('card')->where('id', $data[$i])
             ->find_array();
-          $cards[0][$i] = $card;
+          $cards[$i] = $card;
         }
       }else{//$records取得失敗
         $error = array(
