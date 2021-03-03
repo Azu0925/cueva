@@ -129,7 +129,7 @@
     }
 
     //登録されているユーザー情報取得
-    $user_list = ORM::for_table($user_table)->where('token', $token)->find_one();
+    $user_list = ORM::for_table($user_table)->where('token', $token)->find_many();
 
     $list = [];
     foreach(ORM::for_table($user_table)->find_result_set() as $user_list) {
@@ -150,9 +150,11 @@
     }
     //user_idの取得
     $user_id = $user_list['id'];
+    //var_dump($user_id);
 
     //user_nameの取得
     $map_host = $user_list['user_name'];
+    //var_dump($map_host);
 
     //メンバー情報取得
     $member_list = ORM::for_table($member_table)->where('user_id', $user_id)->find_one();
@@ -175,20 +177,27 @@
         exit;
     }
 
-    //team_idの取得
+    // var_dump($user_id);
+    // var_dump($member_list['user_id']);
+
+    //memberテーブルからteam_idの取得
     $team_id = $list['team_id'];
+    
 
     //team_idの情報取得
     $team_list = ORM::for_table($team_table)->where('id', $team_id)->find_one();
 
     $list = [];
     foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
-        $list = ($team_list->as_array('team_id'));
+        $list = ($team_list->as_array('id'));
     }
     // var_dump($list);
 
+    //teamテーブルからteam_idの取得
+    $team_id = $list['id'];
+
     //team_idの照合
-    if($team_id !== $team_list['team_id']){
+    if($team_id !== $team_list['id']){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
@@ -199,8 +208,12 @@
         exit;
     }
 
+    // var_dump($team_id);
+    // var_dump($team_list['id']);
+
     //map_idの取得
-    $map_id = $_POST['id'];
+    $map_id = $_POST['map_id'];
+    var_dump($map_id);
 
     //mapテーブルから情報取得
     $map_list = ORM::for_table($map_table)->where('id', $map_id)->find_many();
