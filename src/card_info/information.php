@@ -34,8 +34,10 @@
         ))
         ->find_array(); 
         if ($information != false) { //結果
-          $result = $information;
-          echo json_encode($result);
+          $result = array(
+            "result" => $information
+          );
+          echo json_encode($result, JSON_UNESCAPED_UNICODE);
           exit;
         } else { //information取得失敗
           $error = array(
@@ -46,7 +48,7 @@
               )
             )
           );
-          echo json_encode($error);
+          echo json_encode($error, JSON_UNESCAPED_UNICODE);
           exit;
         }
       } else { //tokenとcard_idに関連性がなかった場合(チームメンバー以外の削除リクエスト)
@@ -58,7 +60,7 @@
             )
           )
         );
-        echo json_encode($error);
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
         exit;
       }
     }
@@ -72,4 +74,4 @@
       )
     );
 
-    echo json_encode($error);
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
