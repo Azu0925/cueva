@@ -33,9 +33,20 @@
           'id' => $map_id,
           'team_id' => $team_id
         ))
-        ->find_array(); 
+        ->find_one(); 
         if ($information != false) { //結果
-          $result = $information;
+          $result = array(
+            "result" => array(
+                "map_id" => $information->id,
+                "map_name" => $information->map_name,
+                "map_description" => $information->map_description,
+                "team_id" => $information->team_id,
+                "parameter_top" => $information->parameter_top,
+                "parameter_under" => $information->parameter_under,
+                "parameter_left" => $information->parameter_left,
+                "parameter_right" => $information->parameter_right,
+              )
+          );
           echo json_encode($result, JSON_UNESCAPED_UNICODE);
           exit;
         } else { //information取得失敗
