@@ -213,7 +213,7 @@
 
     //map_idの取得
     $map_id = $_POST['map_id'];
-    var_dump($map_id);
+    // var_dump($map_id);
 
     //mapテーブルから情報取得
     $map_list = ORM::for_table($map_table)->where('id', $map_id)->find_many();
