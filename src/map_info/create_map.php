@@ -23,6 +23,18 @@
 
     //tokenとteam_idの検索
     if (isset($_POST['token']) && isset($_POST['team_id'])) {
+      if (mb_strlen($map_description) > 100) {
+        $error = array(
+          "error" => array(
+            array(
+              "code" => "400",
+              "message" => "Bad Request"
+            )
+          )
+        );
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
+        exit;
+      }
       $token = $_POST['token'];  //tokenを取得し変数へ格納
       $team_id = $_POST['team_id']; //map_idを取得し変数へ格納
       $select = ORM::for_table('v_map_create')
@@ -35,7 +47,7 @@
         $create_user = ORM::for_table('user')->where('token', $token)->find_one();
         $create_user->user_name;
         $create_map = ORM::for_table('map')->create(); //map新規作成処理1
-        if ($create_map != false) { //card更新処理２(更新内容の挿入)
+        if ($create_map != false) { //map更新処理(内容の挿入)
           if (!isset($_POST['map_name'])) { //map_name 作成するmapの名前がなかったらfalse
             $error = array(
               "error" => array(
