@@ -22,8 +22,7 @@
     //値の受け取り
     $token = $_POST['token'];
     $card_name = $_POST['card_name'];
-    $card_description = $_POST['description'];
-    $update_user = $_POST['update_user'];
+    $card_description = $_POST['card_description'];
     $card_x = $_POST['card_x'];
     $card_y = $_POST['card_y'];
     $card_width	= $_POST['card_width'];
@@ -43,7 +42,7 @@
         echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
     }
-    
+
     //card_nameのバリデーションチェック
     if (!preg_match("/^.{1,30}$/",$card_name)) {
         $err = array(
@@ -58,8 +57,8 @@
         exit;
     }
 
-    //map_descriptionのバリデーションチェック
-    if (!preg_match("/^.{0,100}$/",$map_description)) {
+    //card_descriptionのバリデーションチェック
+    if (!preg_match("/^.{0,100}$/",$card_description)) {
         $err = array(
             "error" => array(
             array(
@@ -152,6 +151,9 @@
     //user_idの取得
     $user_id = $user_list['id'];
 
+    //user_nameの取得
+    $user_name = $user_list['user_name'];
+
     //メンバー情報取得
     $member_list = ORM::for_table($member_table)->where('user_id', $user_id)->find_one();
 
@@ -175,18 +177,19 @@
 
     //team_idの取得
     $team_id = $list['team_id'];
+    // var_dump($team_id);
 
     //team_idの情報取得
     $team_list = ORM::for_table($team_table)->where('id', $team_id)->find_one();
 
     $list = [];
     foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
-        $list = ($team_list->as_array('team_id'));
+        $list = ($team_list->as_array('id'));
     }
-    // var_dump($list);
+    //var_dump($list);
 
     //team_idの照合
-    if($team_id !== $team_list['team_id']){
+    if($team_id !== $team_list['id']){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
@@ -196,9 +199,12 @@
         echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
     }
+    
 
     //map_idの取得
     $map_id = $_POST['map_id'];
+
+    //var_dump($map_id);
 
     //map_idの情報取得
     $map_list = ORM::for_table($map_table)->where('id', $map_id)->find_one();
@@ -210,7 +216,7 @@
     // var_dump($list);
 
     //map_idの照合
-    if($map_id !== $map_list['map_id']){
+    if($map_id !== $map_list['id']){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
@@ -230,9 +236,9 @@
     //カードの新規作成
     $create_card = ORM::for_table($card_table)->create();
     $create_card->card_name = $card_name;
-    $create_card->card_discription = $card_discription;
+    $create_card->card_description = $card_description;
     $create_card->update_date = $update_date;
-    $create_card->update_user = $update_user;
+    $create_card->update_user = $user_name;
     $create_card->card_x = $card_x;
     $create_card->card_y = $card_y;
     $create_card->card_width = $card_width;
