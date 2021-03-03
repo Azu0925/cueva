@@ -22,8 +22,7 @@
     //値の受け取り
     $token = $_POST['token'];
     $card_name = $_POST['card_name'];
-    $card_description = $_POST['description'];
-    $update_user = $_POST['update_user'];
+    $card_description = $_POST['card_description'];
     $card_x = $_POST['card_x'];
     $card_y = $_POST['card_y'];
     $card_width	= $_POST['card_width'];
@@ -43,7 +42,7 @@
         echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
     }
-    
+
     //card_nameのバリデーションチェック
     if (!preg_match("/^.{1,30}$/",$card_name)) {
         $err = array(
@@ -58,8 +57,8 @@
         exit;
     }
 
-    //map_descriptionのバリデーションチェック
-    if (!preg_match("/^.{0,100}$/",$map_description)) {
+    //card_descriptionのバリデーションチェック
+    if (!preg_match("/^.{0,100}$/",$card_description)) {
         $err = array(
             "error" => array(
             array(
@@ -152,6 +151,9 @@
     //user_idの取得
     $user_id = $user_list['id'];
 
+    //user_nameの取得
+    $user_name = $user_list['user_name'];
+
     //メンバー情報取得
     $member_list = ORM::for_table($member_table)->where('user_id', $user_id)->find_one();
 
@@ -232,7 +234,7 @@
     $create_card->card_name = $card_name;
     $create_card->card_discription = $card_discription;
     $create_card->update_date = $update_date;
-    $create_card->update_user = $update_user;
+    $create_card->update_user = $user_name;
     $create_card->card_x = $card_x;
     $create_card->card_y = $card_y;
     $create_card->card_width = $card_width;
