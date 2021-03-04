@@ -1,4 +1,7 @@
     <?php
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: X-Requested-With, Origin, X-Csrftoken, Content-Type, Accept");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, HEAD");
     //これをsrc直下にコピーしてファイル名の「.sample」部分を削除して動かしてちょ
 
     use Cueva\Classes\{Env, Func};
@@ -36,7 +39,7 @@
               )
             )
           );
-          echo json_encode($result);
+          echo json_encode($result, JSON_UNESCAPED_UNICODE);
           exit;
         } else { //Dleteエラー処理
           $error = array(
@@ -47,7 +50,7 @@
               )
             )
           );
-          echo json_encode($error);
+          echo json_encode($error, JSON_UNESCAPED_UNICODE);
           exit;
         }
       } else { //tokenとmap_idに関連性がなかった場合(チームメンバー以外の削除リクエスト)
@@ -59,7 +62,7 @@
             )
           )
         );
-        echo json_encode($error);
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
         exit;
       }
     }
@@ -73,4 +76,4 @@
       )
     );
 
-    echo json_encode($error);
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
