@@ -2,12 +2,12 @@
 //DB接続
 use Cueva\Classes\ {Env, Func};
 
-    require_once '../../vendor/j4mie/idiorm/idiorm.php';
-    require '../../vendor/autoload.php';
-
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: X-Requested-With, Origin, X-Csrftoken, Content-Type, Accept");
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, HEAD");
+
+    require_once '../../vendor/j4mie/idiorm/idiorm.php';
+    require '../../vendor/autoload.php';
 
     ORM::configure('mysql:host='.Env::get("HOST").';port='.Env::get("PORT").';dbname='.Env::get("DB_NAME"));
     ORM::configure('username', Env::get('USER_ID'));
@@ -23,7 +23,7 @@ if((empty($_POST['token']))){
             )
         )
     );
-    echo json_encode($error);
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
     exit;
 }
 //送られてきたトークンからユーザー情報を取得
@@ -48,7 +48,7 @@ if((empty($person['id']))){
             )
         )
     );
-    echo json_encode($error);
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
     exit;
 }
 else{
@@ -59,5 +59,5 @@ else{
 $response = array(
     "result" => "true"
 );
-echo json_encode($response);
+echo json_encode($response, JSON_UNESCAPED_UNICODE);
 ?>

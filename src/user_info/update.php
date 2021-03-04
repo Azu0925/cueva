@@ -1,12 +1,12 @@
 <?php
 
     use Cueva\Classes\ {Env, Func};
-    require_once '../../vendor/j4mie/idiorm/idiorm.php';
-    require '../../vendor/autoload.php';
 
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: X-Requested-With, Origin, X-Csrftoken, Content-Type, Accept");
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, HEAD");
+    require_once '../../vendor/j4mie/idiorm/idiorm.php';
+    require '../../vendor/autoload.php';
     
     ORM::configure('mysql:host='.Env::get("HOST").';port='.Env::get("PORT").';dbname='.Env::get("DB_NAME"));
     ORM::configure('username', Env::get('USER_ID'));
@@ -41,7 +41,7 @@
         array( 
         array('code' => '401','message' => 'Unauthorized')),
     );
-        echo json_encode($err);
+        echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
 }
 
@@ -59,7 +59,7 @@
         array( 
         array('code' => '452','message' => 'Insert error for database')),
     );
-        echo json_encode($err);
+        echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
 }
     
@@ -67,6 +67,6 @@
     $response = array(
         'result' => true,
     );
-    echo json_encode($response);
+    echo json_encode($response, JSON_UNESCAPED_UNICODE);
     
 ?>

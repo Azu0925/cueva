@@ -3,13 +3,12 @@
 
     use Cueva\Classes\{Env, Func};
 
-    require_once '../../vendor/j4mie/idiorm/idiorm.php';
-    require '../../vendor/autoload.php';
-
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: X-Requested-With, Origin, X-Csrftoken, Content-Type, Accept");
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, HEAD");
 
+    require_once '../../vendor/j4mie/idiorm/idiorm.php';
+    require '../../vendor/autoload.php';
 
     ORM::configure('mysql:host=' . Env::get("HOST") . ';port=' . Env::get("PORT") . ';dbname=' . Env::get("DB_NAME"));
     ORM::configure('username', Env::get('USER_ID'));
@@ -40,7 +39,7 @@
               )
             )
           );
-          echo json_encode($result);
+          echo json_encode($result,JSON_UNESCAPED_UNICODE);
           exit;
         } else { //Dleteエラー処理
           $error = array(
@@ -51,7 +50,7 @@
               )
             )
           );
-          echo json_encode($error);
+          echo json_encode($error,JSON_UNESCAPED_UNICODE);
           exit;
         }
       } else { //tokenとmap_idに関連性がなかった場合(チームメンバー以外の削除リクエスト)
@@ -63,7 +62,7 @@
             )
           )
         );
-        echo json_encode($error);
+        echo json_encode($error,JSON_UNESCAPED_UNICODE);
         exit;
       }
     }
@@ -77,4 +76,4 @@
       )
     );
 
-    echo json_encode($error);
+    echo json_encode($error,JSON_UNESCAPED_UNICODE);
