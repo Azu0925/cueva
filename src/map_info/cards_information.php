@@ -29,52 +29,32 @@
       ))
         ->find_many();
       if ($records != false) {//$recordsに値が入っていればtrue
-        foreach ($records as $record) {//該当するcard_idを配列に格納
-          $id[] = $record->c_id;
-        }
-        $data = array();
-        for ($i = 0; $i < count($id); $i++) {//配列に格納されたカードidを検索
-          $card = ORM::for_table('card')->where('id', $id[$i])
-            ->find_array();
-          $data[$i] = $card;
-        }
-      }else{//$records取得失敗
-        $error = array(
-          "error" => array(
-            array(
-              "code" => "452",
-              "message" => "Delete error for database"
-            )
-          )
-        );
-        echo json_encode($error, JSON_UNESCAPED_UNICODE);
-        exit;
-      }
-      if ($data != false) { //cardsに値が入っていればtrue
-        $result = $data;
+        $card = ORM::for_table('card')->where('map_id', $map_id)->find_array();
+        $result = $card;
         echo json_encode($result, JSON_UNESCAPED_UNICODE);
         exit;
-      } else { //cards取得失敗
+      } else {//$records取得失敗
         $error = array(
           "error" => array(
             array(
               "code" => "452",
-              "message" => "Delete error for database"
+              "message" => "Reference error for database"
             )
           )
         );
         echo json_encode($error, JSON_UNESCAPED_UNICODE);
         exit;
       }
+    } else{
       //tokenとmap_idが取得できなかった場合
       $error = array(
-        "error" => array(
-          array(
-            "code" => "453",
-            "message" => "Paramter is null"
-          )
+      "error" => array(
+        array(
+          "code" => "453",
+          "message" => "Paramter is null"
         )
-      );
-      echo json_encode($error, JSON_UNESCAPED_UNICODE);
-      exit;
+      )
+    );
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
+    exit;
     }
