@@ -17,19 +17,22 @@
 
     if (isset($_POST['token'])) {//tokenが取得できた場合
       $token =  $_POST['token'];
-      $select = ORM::for_table('v_user_invited')->where('token', $token)
+      $select = ORM::for_table('v_user_invited')->select_many('team_id', 'team_name')->where('token', $token)
       ->find_array();
+
+      // var_dump($select);
+
       if ($select != false) {
-        $result = $select;
-        echo json_encode($result);
-        exit;
-      }else{
-        //tokenが取得できなかった場合
+          $result = $select;
+          echo json_encode($result, JSON_UNESCAPED_UNICODE);
+          exit;
+        } 
+      else{  //配列が取得できなかった場合
       $error = array(
         "error" => array(
           array(
             "code" => "452",
-            "message" => "Delete error for database"
+            "message" => "Reference error for database"
           )
         )
       );
