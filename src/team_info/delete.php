@@ -1,114 +1,82 @@
-<?php
-//DB接続
-use Cueva\Classes\ {Env, Func};
+    <?php
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: X-Requested-With, Origin, X-Csrftoken, Content-Type, Accept");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, HEAD");
+    //これをsrc直下にコピーしてファイル名の「.sample」部分を削除して動かしてちょ
+
+    use Cueva\Classes\{Env, Func};
 
     require_once '../../vendor/j4mie/idiorm/idiorm.php';
     require '../../vendor/autoload.php';
 
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Headers: X-Requested-With, Origin, X-Csrftoken, Content-Type, Accept");
-    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, HEAD");
 
-    ORM::configure('mysql:host='.Env::get("HOST").';port='.Env::get("PORT").';dbname='.Env::get("DB_NAME"));
+    ORM::configure('mysql:host=' . Env::get("HOST") . ';port=' . Env::get("PORT") . ';dbname=' . Env::get("DB_NAME"));
     ORM::configure('username', Env::get('USER_ID'));
     ORM::configure('password', Env::get("PASSWORD"));
     ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+    $table = 'v_map_delete'; //テーブルの名前
 
-    //値受け取り
-    $token = $_POST['token'];
-    $team_id = $_POST['team_id'];
+    //$testToken = 'test';
 
-    //tableの指定
-    $user_table = 'user';
-    $member_table = 'member';
-    $team_table = 'team';
-
-    //登録されているユーザー情報取得
-    $user_list = ORM::for_table($user_table)->where('token',$token)->find_one();
- 
-    $list = [];
-    foreach(ORM::for_table($user_table)->find_result_set() as $user_list){
-        $list = ($user_list->as_array('id','token'));
-    }
-
-    var_dump($token);
-    var_dump($user_list['token']);
-    //tokenの照合
-    if($token !==  $user_list['token']){
-        $err = array('error' =>
-        array(
-        array('code' =>'401','messeage' => 'Unauthorized')),
-    );
-        echo json_encode($err, JSON_UNESCAPED_UNICODE);
-        exit;
-}
-    //user_idの取得
-    $user_id = $user_list['id'];
-
-    //メンバー情報取得
-    $member_list = ORM::for_table($member_table)->where('user_id', $user_id)->find_one();
-
-    $list = [];
-    foreach(ORM::for_table($member_table)->find_result_set() as $member_list) {
-        $list = ($member_list->as_array('user_id','team_id'));
-    }
-    // var_dump($list);
-
-    //user_idの照合
-    if($user_id !== $member_list['user_id']){
-        //エラー内容
-        //jsonでエラーメッセージの返却
-        $err = array('error' =>
-        array( 
-        array('code' => '403','message' => 'Forbidden')),
-    );
-        echo json_encode($err, JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    //team_idの取得
-    $team_id = $list['team_id'];
-    // var_dump($team_id);
-
-    //team_idの情報取得
-    $team_list = ORM::for_table($team_table)->where('id', $team_id)->find_one();
-
-    // $list = [];
-    // foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
-    //     $list = ($team_list->as_array('id'));
-    // }
-    //var_dump($list);
-
-    //$team_id = $list['id'];
-    //team_idの照合
-    if($team_id !== $team_list['id']){
-        //エラー内容
-        //jsonでエラーメッセージの返却
-        $err = array('error' =>
-        array( 
-        array('code' => '403','message' => 'Forbidden')),
-    );
-        echo json_encode($err, JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-    var_dump($team_list);
-    
-    //teamの削除
-    if($team_list == false){
-        //エラー内容
-        //jsonでエラーメッセージの返却
-        $err = array('error' =>
-        array( 
-        array('code' => '450','message' => 'Can not connected for database')),
-    );
-        echo json_encode($err, JSON_UNESCAPED_UNICODE);
-        exit;
-    }else{
-    //jsonで返却
-    $team_list->delete();
-    $response = array(
-        'result' => true,
+    //tokenとteam_idの検索
+    if (isset($_POST['token']) && isset($_POST['team_id'])) {
+      $token = $_POST['token'];  //tokenを取得し変数へ格納
+      $team_id = $_POST['team_id']; //team_idを取得し変数へ格納
+      $select = ORM::for_table('v_map_create')
+        ->where(array(
+          'token' => $token,
+          't_id' => $team_id
+        ))
+        ->find_many();
+        var_dump($team_id);
+      if ($select != false) { //team削除処理
+        $m_delete = ORM::for_table("member")->where('team_id', $team_id)->delete_many();
+        //var_dump($m_delete);
+        $delete = ORM::for_table("team")->where('id', $team_id)->find_one();
+        if ($delete != false) {
+          $delete->delete();
+          $result = array(
+            "result" => array(
+              array(
+                "result" => true
+              )
+            )
+          );
+          echo json_encode($result, JSON_UNESCAPED_UNICODE);
+          exit;
+        } else { //Dleteエラー処理
+          $error = array(
+            "error" => array(
+              array(
+                "code" => "452",
+                "message" => "Delete error for database"
+              )
+            )
+          );
+          echo json_encode($error, JSON_UNESCAPED_UNICODE);
+          exit;
+        }
+      } else { //tokenとteam_idに関連性がなかった場合(チームメンバー以外の削除リクエスト)
+        $error = array(
+          "error" => array(
+            array(
+              "code" => "403",
+              "message" => "Forbidden"
+            )
+          )
         );
-        echo json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
+        exit;
+      }
     }
-?>
+    //tokenとteam_idが取得できなかった場合
+    $error = array(
+      "error" => array(
+        array(
+          "code" => "453",
+          "message" => "Paramter is null"
+        )
+      )
+    );
+
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
