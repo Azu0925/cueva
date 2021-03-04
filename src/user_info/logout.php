@@ -3,12 +3,11 @@
 
     use Cueva\Classes\{Env, Func};
 
-    require_once '../../vendor/j4mie/idiorm/idiorm.php';
-    require '../../vendor/autoload.php';
-
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: X-Requested-With, Origin, X-Csrftoken, Content-Type, Accept");
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, HEAD");
+    require_once '../../vendor/j4mie/idiorm/idiorm.php';
+    require '../../vendor/autoload.php';
 
 
     ORM::configure('mysql:host=' . Env::get("HOST") . ';port=' . Env::get("PORT") . ';dbname=' . Env::get("DB_NAME"));
