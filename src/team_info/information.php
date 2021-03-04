@@ -56,10 +56,19 @@ use Cueva\Classes\ {Env, Func};
 
     $team_info = ORM::for_table('team')->where('id', $team_id)->find_one()->as_array();
     $map_info = ORM::for_table('map')->where('team_id', $team_info['id'])->find_many();
+    $member_info = ORM::for_table('member')->join('user', array('member.user_id', '=', 'user.id'))->where('team_id', $team_info['id'])->select('user.user_name')->find_many();
+
+    $member_list = [];
+    foreach($member_info as $row){
+        $member_list[] = $row['user_name'];
+    }
 
     $list = [];
     foreach($map_info as $row){
-        $list[] = $row['id'];
+        $list[] = array(
+            "map_id" => $row['id'],
+            "map_name" => $row['map_name']
+        );
     }
     //jsonの返却
     $response = array(
@@ -67,7 +76,8 @@ use Cueva\Classes\ {Env, Func};
             "team_id" => $team_info['id'],
             "team_name" => $team_info['team_name'],
             "team_description" => $team_info['team_description'],
-            "map_id" => $list
+            "member" => $member_list,
+            "map_info" => $list
         )
     );
     //21var_dump($response);
