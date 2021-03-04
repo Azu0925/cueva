@@ -73,13 +73,13 @@ use Cueva\Classes\ {Env, Func};
     //team_idの情報取得
     $team_list = ORM::for_table($team_table)->where('id', $team_id)->find_one();
 
-    $list = [];
-    foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
-        $list = ($team_list->as_array('id'));
-    }
+    // $list = [];
+    // foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
+    //     $list = ($team_list->as_array('id'));
+    // }
     //var_dump($list);
 
-    $team_id = $team_list['id'];
+    //$team_id = $list['id'];
     //team_idの照合
     if($team_id !== $team_list['id']){
         //エラー内容
@@ -91,9 +91,10 @@ use Cueva\Classes\ {Env, Func};
         echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
     }
+    var_dump($team_list);
     
     //teamの削除
-    if($team_id->delete()){
+    if($team_list == false){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
@@ -102,11 +103,12 @@ use Cueva\Classes\ {Env, Func};
     );
         echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
-    }
-    
+    }else{
     //jsonで返却
+    $team_list->delete();
     $response = array(
         'result' => true,
         );
         echo json_encode($response, JSON_UNESCAPED_UNICODE);
+    }
 ?>
