@@ -31,13 +31,15 @@ use Cueva\Classes\ {Env, Func};
         $list = ($user_list->as_array('id','token'));
     }
 
+    var_dump($token);
+    var_dump($user_list['token']);
     //tokenの照合
-    if(!$token !==  $user_list['token']){
+    if($token !==  $user_list['token']){
         $err = array('error' =>
         array(
         array('code' =>'401','messeage' => 'Unauthorized')),
     );
-        echo json_encode($err, JSON_UNEESCAPE_UNICODE);
+        echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
 }
     //user_idの取得
@@ -77,6 +79,7 @@ use Cueva\Classes\ {Env, Func};
     }
     //var_dump($list);
 
+    $team_id = $team_list['id'];
     //team_idの照合
     if($team_id !== $team_list['id']){
         //エラー内容
