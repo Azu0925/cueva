@@ -22,15 +22,10 @@
     $table = 'user';
 
     //登録されているユーザー情報の全件取得
-    $list = ORM::for_table($table)->where('user_address', $user_address)->find_many();
-
-    $user_list = [];
-    foreach(ORM::for_table($table)->find_result_set() as $list) {
-        $user_list = ($list->as_array('id' , 'user_name' , 'user_address' , 'user_password' ,'token'));
-    }
+    $user_list = ORM::for_table($table)->where('user_address', $user_address)->find_one()->as_array();
 
     //メールアドレスの照合
-    if($user_address !== $list['user_address']){
+    if(!$user_list){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array(
@@ -49,7 +44,6 @@
     if(!password_verify($user_password, $hash)){
         //エラー内容
         //jsonでエラーメッセージの返却
-        echo 'a';
         $err = array(
             'error' =>
         array( 
