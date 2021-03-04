@@ -33,7 +33,7 @@
                 )
             )
         );
-        echo json_encode($error);
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
         exit;
     }
     //リソースが見つからなかった時
@@ -46,7 +46,7 @@
                 )
             )
         );
-        echo json_encode($error);
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
         exit;
     }
     /*if((empty($team))){
@@ -58,7 +58,7 @@
                 )
             )
         );
-        echo json_encode($error);
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
         exit;
     }*/
 //jsonの返却

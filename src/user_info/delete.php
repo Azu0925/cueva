@@ -23,7 +23,7 @@ if((empty($_POST['token']))){
             )
         )
     );
-    echo json_encode($error);
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
     exit;
 }
 //送られてきたトークンからユーザー情報を取得
@@ -48,7 +48,7 @@ if((empty($person['id']))){
             )
         )
     );
-    echo json_encode($error);
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
     exit;
 }
 else{
@@ -59,5 +59,5 @@ else{
 $response = array(
     "result" => "true"
 );
-echo json_encode($response);
+echo json_encode($response, JSON_UNESCAPED_UNICODE);
 ?>

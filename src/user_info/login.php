@@ -38,7 +38,7 @@
         array( 
         array('code' => '401','message' => 'Unauthorized')),
     );
-        echo json_encode($err);
+        echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
 }
     
@@ -55,7 +55,7 @@
         array( 
         array('code' => '401','message' => 'Unauthorized')),
     );
-        echo json_encode($err);
+        echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
 }
 
@@ -75,6 +75,6 @@
     $response = array(
         'token' => $generate_token,
     );
-    echo json_encode($response);
+    echo json_encode($response, JSON_UNESCAPED_UNICODE);
 
 ?>

@@ -36,7 +36,7 @@
             )
           )
         );
-        echo json_encode($result);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
         exit;
       } else {
         $error = array(
@@ -47,7 +47,7 @@
             )
           )
         );
-        echo json_encode($error);
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
         exit;
       }
     }
@@ -60,4 +60,4 @@
       )
     );
 
-    echo json_encode($error);
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
