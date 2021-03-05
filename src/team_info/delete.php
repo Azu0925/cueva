@@ -28,13 +28,15 @@
           't_id' => $team_id
         ))
         ->find_many();
-        var_dump($team_id);
+        //var_dump($team_id);
       if ($select != false) { //team削除処理
-        $m_delete = ORM::for_table("member")->where('team_id', $team_id)->delete_many();
-        //var_dump($m_delete);
-        $delete = ORM::for_table("team")->where('id', $team_id)->find_one();
+        $m_delete = ORM::for_table("member")->where('team_id', $team_id);
+        $map_delete = ORM::for_table("map")->where('team_id', $team_id);
+        $delete = ORM::for_table("team")->where('id', $team_id);
         if ($delete != false) {
-          $delete->delete();
+          $m_delete->delete_many();
+          $map_delete->delete_many();
+          $delete->delete_many();
           $result = array(
             "result" => array(
               array(
