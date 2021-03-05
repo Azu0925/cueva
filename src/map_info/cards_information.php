@@ -35,9 +35,7 @@
         exit;
       } else {//$records取得失敗
         $result = array(
-          "data" => array(
-            
-          )
+          
         );
         echo json_encode($result, JSON_UNESCAPED_UNICODE);
         exit;
