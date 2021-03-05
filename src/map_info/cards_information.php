@@ -35,7 +35,7 @@
         exit;
       } else {//$records取得失敗
         $result = array(
-          "result" => array(
+          "data" => array(
             
           )
         );
