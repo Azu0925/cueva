@@ -29,9 +29,11 @@
         ))
         ->find_many();
       if ($select != false) { //map削除処理
-        $delete = ORM::for_table("map")->where('id', $map_id)->find_one();
-        if ($delete != false) {
-          $delete->delete();
+        $c_delete = ORM::for_table("card")->where('map_id', $map_id);
+        $m_delete = ORM::for_table("map")->where('id', $map_id);
+        if ($m_delete != false) {
+          $c_delete->delete_many();
+          $m_delete->delete_many();
           $result = array(
             "result" => array(
               array(
