@@ -44,7 +44,7 @@
     }
 
     //card_nameのバリデーションチェック
-    if (!preg_match("/^.{1,30}$/",$card_name)) {
+    if (!preg_match("/^.{0,30}$/",$card_name)) {
         $err = array(
             "error" => array(
             array(
