@@ -34,15 +34,12 @@
         echo json_encode($result, JSON_UNESCAPED_UNICODE);
         exit;
       } else {//$records取得失敗
-        $error = array(
-          "error" => array(
-            array(
-              "code" => "452",
-              "message" => "Reference error for database"
-            )
+        $result = array(
+          "result" => array(
+            
           )
         );
-        echo json_encode($error, JSON_UNESCAPED_UNICODE);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
         exit;
       }
     } else{
