@@ -13,7 +13,10 @@
     ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 
     //送られてきたトークンの値から本人情報を取得
-    $person = ORM::for_table('user')->where('token', $_POST['token'])->find_one()->as_array();
+    $person = ORM::for_table('user')->where('token', $_POST['token'])->find_one();
+    if($person !== false){
+        $person->as_array();
+    }
     //取ってきたユーザーIDから所属チームを取得
     $member = ORM::for_table('member')->where('user_id', $person['id'])->find_many();
 
