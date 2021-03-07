@@ -208,15 +208,10 @@
 
     //map_idの情報取得
     $map_list = ORM::for_table($map_table)->where('id', $map_id)->find_one();
-
-    $list = [];
-    foreach(ORM::for_table($map_table)->find_result_set() as $map_list) {
-        $list = ($map_list->as_array('id','team_id'));
-    }
     // var_dump($list);
 
     //map_idの照合
-    if($map_id !== $map_list['id']){
+    if($map_list['id'] === false){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
@@ -226,9 +221,6 @@
         echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
     }
-
-    //team_idの取得
-    $team_id = $list['team_id'];
 
     //現在の日時の取得
     $update_date = date('Y-m-d H:i:s');
