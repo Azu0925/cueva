@@ -64,6 +64,7 @@
 //jsonの返却
 $response = array(
     "result" => array(
+        "user_id" => $person['id'],
         "user_name" => $person['user_name'],
         "user_address" =>$person['user_address'],  
         "team_info" => $team_list
