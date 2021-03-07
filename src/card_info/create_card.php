@@ -131,14 +131,10 @@
     //登録されているユーザー情報取得
     $user_list = ORM::for_table($user_table)->where('token', $token)->find_one();
 
-    $list = [];
-    foreach(ORM::for_table($user_table)->find_result_set() as $user_list) {
-        $list = ($user_list->as_array('id','user_name','token'));
-    }
     // var_dump($list);
 
     //tokenの照合
-    if($token !== $user_list['token']){
+    if($user_list === false){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
