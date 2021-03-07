@@ -28,8 +28,23 @@
           't_id' => $team_id
         ))
         ->find_many();
-        //var_dump($team_id);
+      //var_dump($team_id);
       if ($select != false) { //team削除処理
+
+        $data = array();
+        //teamが一致するmap_idを取得
+        $records = ORM::for_table('map')->where('team_id', $team_id)
+          ->find_many();
+        //該当するmap_idを配列に格納
+        foreach ($records as $record) {
+          $data[] = $record->id;
+        }
+        //配列に格納されたmap_idを元にカードを削除
+        for ($i = 0; $i < count($data); $i++) {
+          $cards = ORM::for_table('card')->where('map_id', $data[$i])
+            ->delete_many();
+        }
+
         $m_delete = ORM::for_table("member")->where('team_id', $team_id);
         $map_delete = ORM::for_table("map")->where('team_id', $team_id);
         $delete = ORM::for_table("team")->where('id', $team_id);
