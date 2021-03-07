@@ -170,12 +170,14 @@
     
     $map_list->as_array();
 
+    echo $user_id.'/';
+    echo $map_list['team_id'];
     //メンバー情報取得
     $member_list = ORM::for_table($member_table)
         ->where(
             array(
                 'user_id' => $user_id,
-                'id' => $map_list['team_id']
+                'team_id' => $map_list['team_id']
             )
         )
         ->find_one();
