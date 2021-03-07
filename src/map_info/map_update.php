@@ -241,10 +241,16 @@
     //var_dump( $map_create);
 
     //map編集
-    $map_update = ORM::for_table($map_table)->where('id',$map_id)->find_result_set()
-        ->set('map_name',$map_name , 'map_description',$map_description , 'map_create',$map_create , 'map_host',$map_host , 'parameter_top',$parameter_top , 'parameter_under',$parameter_under , 'parameter_left',$parameter_left , 'parameter_right',$parameter_right)
-        ->save();
-
+    $map_update = ORM::for_table($map_table)->where('id', $map_id)->find_one();
+          $map_update->map_name = $map_name;
+          $map_update->map_description = $map_description;
+          $map_update->map_create = $map_create;
+          $map_update->map_host = $map_host;
+          $map_update->parameter_top = $parameter_top;
+          $map_update->parameter_under = $parameter_under;
+          $map_update->parameter_left = $parameter_left;
+          $map_update->parameter_right = $parameter_right;
+          $map_update->save();
     //map編集時エラーメッセージ
     if(!$map_update->save()){
         //エラー内容
