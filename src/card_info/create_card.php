@@ -27,6 +27,7 @@
     $card_y = $_POST['card_y'];
     $card_width	= $_POST['card_width'];
     $card_height = $_POST['card_height'];
+    $map_id = $_POST['map_id'];
     
 
     //tokenのバリデーションチェック
@@ -154,74 +155,45 @@
     //user_nameの取得
     $user_name = $user_list['user_name'];
 
-    //メンバー情報取得
-    $member_list = ORM::for_table($member_table)->where('user_id', $user_id)->find_one();
-
-    $list = [];
-    foreach(ORM::for_table($member_table)->find_result_set() as $member_list) {
-        $list = ($member_list->as_array('user_id','team_id'));
-    }
-    // var_dump($list);
-
-    //user_idの照合
-    if($user_id !== $member_list['user_id']){
-        //エラー内容
-        //jsonでエラーメッセージの返却
-        $err = array('error' =>
-        array( 
-        array('code' => '403','message' => 'Forbidden')),
-    );
+    $map_list = ORM::for_table('map')->where('id', $map_id)->find_one();
+    if($map_list === false){
+        $err = array(
+            "error" => array(
+                'code' => '403',
+                'message' => 'Forbidden'
+            )
+        );
         echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
     }
-
-    //team_idの取得
-    $team_id = $list['team_id'];
-    // var_dump($team_id);
-
-    //team_idの情報取得
-    $team_list = ORM::for_table($team_table)->where('id', $team_id)->find_one();
-
-    $list = [];
-    foreach(ORM::for_table($team_table)->find_result_set() as $team_list) {
-        $list = ($team_list->as_array('id'));
-    }
-    //var_dump($list);
-
-    //team_idの照合
-    if($team_id !== $team_list['id']){
-        //エラー内容
-        //jsonでエラーメッセージの返却
-        $err = array('error' =>
-        array( 
-        array('code' => '403','message' => 'Forbidden')),
-    );
-        echo json_encode($err, JSON_UNESCAPED_UNICODE);
-        exit;
-    }
+    $map_list->as_array();
     
+    $member_list = ORM::for_table($member_table)
+    ->where(
+        array(
+            'user_id' => $user_id,
+            'team_id' => $map_list['team_id']
+        )
+    )
+    ->find_one();
 
-    //map_idの取得
-    $map_id = $_POST['map_id'];
-
-    //var_dump($map_id);
-
-    //map_idの情報取得
-    $map_list = ORM::for_table($map_table)->where('id', $map_id)->find_one();
-    // var_dump($list);
-
-    //map_idの照合
-    if($map_list['id'] === false){
+    //チームに所属していない場合false
+    if($member_list === false){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
         array( 
-        array('code' => '403','message' => 'Forbidden')),
-    );
+            array(
+                'code' => '403',
+                'message' => 'Forbidden'
+                )
+            ),
+        );
         echo json_encode($err, JSON_UNESCAPED_UNICODE);
         exit;
     }
-
+    $member_list->as_array();
+    
     //現在の日時の取得
     $update_date = date('Y-m-d H:i:s');
     

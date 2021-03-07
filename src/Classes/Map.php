@@ -27,6 +27,7 @@
             $data = json_decode($msg);
             if ($data->command === "subscribe") {
                 $this->subscriptions[$conn->resourceId] = $data->channel;
+                echo '接続：'.$data->channel.PHP_EOL;
             }elseif($data->command === "notification"){
                 if (isset($this->subscriptions[$conn->resourceId])) {
                     $target = $this->subscriptions[$conn->resourceId];
@@ -156,7 +157,7 @@
                             $link = @mysqli_connect($env->get("HOST"), $env->get("USER_ID"), $env->get("PASSWORD"), $env->get("DB_NAME"));
                             mysqli_set_charset($link, 'utf8');
                             // $dataが数値型かどうか
-                            if(!is_numeric($data->message)){
+                            if(!is_numeric((int)$data->message)){
                                 $error = array(
                                     "error" => array(
                                         array(
@@ -179,6 +180,7 @@
                                     "data" => $cards_list
                                 );
                                 // JSON形式で返却
+                                echo "カード更新成功：".$target.PHP_EOL;
                                 $json_cards_list = json_encode($data, JSON_UNESCAPED_UNICODE);
                             }
                             $this->users[$id]->send($json_cards_list);
