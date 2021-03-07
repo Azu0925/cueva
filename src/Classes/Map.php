@@ -134,12 +134,12 @@
                                 $query = mysqli_query($link, "SELECT * FROM map WHERE id = ".$data->message);
                                 $map_list = mysqli_fetch_assoc($query);
                                 // var_dump($map_list);
-                                $data = array(
+                                $result = array(
                                     "event" => "update_parameter",
                                     "data" => $map_list
                                 );
                                 // JSON形式で返却
-                                $json_map_list = json_encode($data, JSON_UNESCAPED_UNICODE);
+                                $json_map_list = json_encode($result, JSON_UNESCAPED_UNICODE);
                             }
                             $this->users[$id]->send($json_map_list);
                             mysqli_close($link);
