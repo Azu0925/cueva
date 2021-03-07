@@ -27,16 +27,11 @@
     $token = $_POST['token'];
 
     //登録されているユーザー情報取得
-    $user_list = ORM::for_table($user_table)->where('token', $token)->find_one()->as_array();
-    
-    $list = [];
-    foreach(ORM::for_table($user_table)->find_result_set() as $user_list){
-        $list[] = ($user_list->as_array('id','user_name','token'));
-    }
+    $user_list = ORM::for_table($user_table)->where('token', $token)->find_one();    
     //var_dump($user_list);
     
     //tokenの照合
-    if($token !== $user_list['token']){
+    if($user_list === false){
         //エラー内容
         //jsonでエラーメッセージの返却
         $err = array('error' =>
