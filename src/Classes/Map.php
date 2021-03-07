@@ -175,13 +175,13 @@
                                     $cards_list[] = $row;
                                 }
                                 // var_dump($cards_list);
-                                $data = array(
+                                $result = array(
                                     "event" => "update_map",
                                     "data" => $cards_list
                                 );
                                 // JSON形式で返却
                                 echo "カード更新成功：".$target.PHP_EOL;
-                                $json_cards_list = json_encode($data, JSON_UNESCAPED_UNICODE);
+                                $json_cards_list = json_encode($result, JSON_UNESCAPED_UNICODE);
                             }
                             $this->users[$id]->send($json_cards_list);
                             mysqli_close($link);
