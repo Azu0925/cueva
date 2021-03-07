@@ -29,18 +29,6 @@
       exit;
     }
 
-    if ($_POST['card_name'] == '') { //card_nameの値が入ってなければエラー
-      $error = array(
-        "error" => array(
-          array(
-            "code" => "400",
-            "message" => "Bad Request"
-          )
-        )
-      );
-      echo json_encode($error, JSON_UNESCAPED_UNICODE);
-      exit;
-    }
     if (mb_strlen($_POST['card_description']) > 100) { //card_descriptionが100文字以上であればエラー
       $error = array(
         "error" => array(
@@ -53,7 +41,6 @@
       echo json_encode($error, JSON_UNESCAPED_UNICODE);
       exit;
     }
-
 
     if (!is_numeric($_POST['card_x'])) {  //card_xがintでなければエラー
       $error = array(
